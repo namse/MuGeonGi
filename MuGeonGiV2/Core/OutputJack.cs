@@ -15,11 +15,9 @@ namespace MuGeonGiV2.Core
         private WasapiCapture SoundIn;
         private IWaveSource WaveSource;
 
-        public OutputJack(WasapiCapture soundIn)
+        public OutputJack(IWaveSource source)
         {
-            SoundIn = soundIn;
-            var soundInSource = new SoundInSource(SoundIn);
-            WaveSource = new SampleToPcm32(soundInSource.ToSampleSource());
+            WaveSource = source;
         }
 
         public void Connect(Cable cable)

@@ -55,6 +55,7 @@
     <Compile Include="Core\Jack.cs" />
     <Compile Include="Core\OutputJack.cs" />
     <Compile Include="Core\FakeStream.cs" />
+    <Compile Include="Core\Stream.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

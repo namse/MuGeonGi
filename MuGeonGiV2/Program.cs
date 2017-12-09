@@ -23,9 +23,9 @@ namespace MuGeonGiV2
             var cable2 = new Cable();
 
             mic.OutputJack.Connect(cable);
-            //effector.InputJack.Connect(cable);
+            effector.InputJack.Connect(cable);
 
-            //effector.OutputJack.Connect(cable2);
+            effector.OutputJack.Connect(cable2);
             speaker.InputJack.Connect(cable);
 
             mic.TurnOn();

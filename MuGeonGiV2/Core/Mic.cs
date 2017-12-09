@@ -2,6 +2,7 @@
 using CSCore.CoreAudioAPI;
 using CSCore.SoundIn;
 using CSCore.Streams;
+using CSCore.Streams.SampleConverter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +19,10 @@ namespace MuGeonGiV2.Core
         public Mic()
         {
             SoundIn.Initialize();
-            Console.WriteLine(SoundIn.WaveFormat);
             var soundInSource = new SoundInSource(SoundIn);
-            Console.WriteLine(soundInSource.ToSampleSource().WaveFormat); 
+            var pcm32source = new SampleToPcm32(soundInSource.ToSampleSource());
 
-            OutputJack = new OutputJack(SoundIn);
+            OutputJack = new OutputJack(pcm32source);
         }
 
         public void TurnOn()
