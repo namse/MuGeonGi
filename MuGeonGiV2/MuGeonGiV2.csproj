@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Core\Cable.cs" />
     <Compile Include="Core\Effector.cs" />
+    <Compile Include="Core\HighpassFilter.cs" />
     <Compile Include="Core\InputJack.cs" />
     <Compile Include="Core\IInstrument.cs" />
     <Compile Include="Core\Jack.cs" />

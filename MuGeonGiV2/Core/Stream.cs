@@ -15,7 +15,7 @@ namespace MuGeonGiV2.Core
 
         public long Length => 0;
 
-        public WaveFormat WaveFormat => new WaveFormat(44100, 32, 1);
+        public WaveFormat WaveFormat => new WaveFormat(44100, 24, 1);
 
         public void Dispose()
         {

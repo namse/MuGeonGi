@@ -16,7 +16,7 @@ namespace MuGeonGiV2
         static void Main()
         {
             var mic = new Mic();
-            var effector = new Effector();
+            var effector = new HighpassFilter(4000);
             var speaker = new Speaker();
 
             var cable = new Cable();
@@ -26,7 +26,7 @@ namespace MuGeonGiV2
             effector.InputJack.Connect(cable);
 
             effector.OutputJack.Connect(cable2);
-            speaker.InputJack.Connect(cable);
+            speaker.InputJack.Connect(cable2);
 
             mic.TurnOn();
             effector.TurnOn();

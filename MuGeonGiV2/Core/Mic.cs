@@ -20,7 +20,7 @@ namespace MuGeonGiV2.Core
         {
             SoundIn.Initialize();
             var soundInSource = new SoundInSource(SoundIn);
-            var pcm32source = new SampleToPcm32(soundInSource.ToSampleSource());
+            var pcm32source = new SampleToPcm24(soundInSource.ToSampleSource());
 
             OutputJack = new OutputJack(pcm32source);
         }
