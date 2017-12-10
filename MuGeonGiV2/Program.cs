@@ -1,4 +1,5 @@
 ﻿using MuGeonGiV2.Core;
+using Nancy.Hosting.Self;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,27 +16,79 @@ namespace MuGeonGiV2
         [STAThread]
         static void Main()
         {
+            // MicToSpeaker();
+            // Filter();
+            OnlyServer();
+        }
+
+        static void OnlyServer()
+        {
+            HostConfiguration hostConfigs = new HostConfiguration();
+            hostConfigs.UrlReservations.CreateAutomatically = true;
+            var uri = new Uri("http://localhost:8080");
+            var host = new NancyHost(hostConfigs, uri);
+            Console.WriteLine("Running on http://localhost:8080");
+            host.Start();
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
+        }
+
+        static void MicToSpeaker()
+        {
             var mic = new Mic();
-            var effector = new HighpassFilter(4000);
             var speaker = new Speaker();
 
-            var cable = new Cable();
-            var cable2 = new Cable();
+            var cable1 = new Cable();
 
-            mic.OutputJack.Connect(cable);
-            effector.InputJack.Connect(cable);
-
-            effector.OutputJack.Connect(cable2);
-            speaker.InputJack.Connect(cable2);
+            mic.OutputJack.Connect(cable1);
+            speaker.InputJack.Connect(cable1);
 
             mic.TurnOn();
-            effector.TurnOn();
             speaker.TurnOn();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+        }
 
+        static void Filter()
+        {
+            var mic = new Mic();
+            var lowpassFilter = new LowpassFilter(1000);
+            var equalizer = new Equalizer();
+            var highpassFilter = new HighpassFilter(1000);
+            var speaker = new Speaker();
+
+            var cable1 = new Cable();
+            var cable2 = new Cable();
+            var cable3 = new Cable();
+            var cable4 = new Cable();
+
+            mic.OutputJack.Connect(cable1);
+            lowpassFilter.InputJack.Connect(cable1);
+
+            lowpassFilter.OutputJack.Connect(cable2);
+            equalizer.InputJack.Connect(cable2);
+
+            equalizer.OutputJack.Connect(cable3);
+            highpassFilter.InputJack.Connect(cable3);
+
+            highpassFilter.OutputJack.Connect(cable4);
+            speaker.InputJack.Connect(cable4);
+
+            mic.TurnOn();
+            speaker.TurnOn();
+
+            foreach (Equalizer.Frequencies frequency in Enum.GetValues(typeof(Equalizer.Frequencies)))
+            {
+                equalizer.SetFilter(frequency, 16);
+            }
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
     }
 }

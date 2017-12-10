@@ -24,5 +24,10 @@ namespace MuGeonGiV2.Core
         {
             cable.PutSoundInSource(WaveSource);
         }
+
+        public void Destroy()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

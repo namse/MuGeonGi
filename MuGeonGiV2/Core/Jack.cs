@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Core
 {
-    public interface IJack
+    public interface IJack : IInstrument
     {
         void Connect(Cable cable);
     }

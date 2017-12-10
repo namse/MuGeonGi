@@ -14,5 +14,10 @@ namespace MuGeonGiV2.Core
         {
             FakeStream.SetStream(cable.FakeStream);
         }
+
+        public void Destroy()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

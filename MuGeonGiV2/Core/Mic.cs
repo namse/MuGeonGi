@@ -25,9 +25,31 @@ namespace MuGeonGiV2.Core
             OutputJack = new OutputJack(pcm32source);
         }
 
+        public void SetDevice(string deviceTag)
+        {
+            var device = AvailableDevices.Find(availableDevice => availableDevice.ToString() == deviceTag);
+            // TODO: device 바꾸면 연결된게 다 나갈라지 않나요?
+            SoundIn.Device = device;
+        }
+
+        public List<MMDevice> AvailableDevices {
+            get {
+                using (var deviceEnumerator = new MMDeviceEnumerator())
+                using (var deviceCollection = deviceEnumerator.EnumAudioEndpoints(DataFlow.Capture, DeviceState.Active))
+                {
+                    return deviceCollection.ToList();
+                }
+            }
+        }
+
         public void TurnOn()
         {
             SoundIn.Start();
+        }
+
+        public void Destroy()
+        {
+            throw new NotImplementedException();
         }
     }
 }

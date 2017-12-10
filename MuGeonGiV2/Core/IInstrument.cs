@@ -8,6 +8,6 @@ namespace MuGeonGiV2.Core
 {
     public interface IInstrument
     {
-        void TurnOn();
+        void Destroy();
     }
 }

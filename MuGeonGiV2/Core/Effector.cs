@@ -16,6 +16,11 @@ namespace MuGeonGiV2.Core
             OutputJack = new OutputJack(this);
         }
 
+        public void Destroy()
+        {
+            throw new NotImplementedException();
+        }
+
         public override int Read(byte[] buffer, int offset, int count)
         {
             return InputJack.FakeStream.Read(buffer, offset, count);
