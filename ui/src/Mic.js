@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Box from './Box';
-// import InputJack from './InputJack';
+import Jack from './Jack';
 
 export default class Mic extends Component {
   constructor(props) {
@@ -53,6 +53,7 @@ export default class Mic extends Component {
         >
           {options}
         </select>
+        <Jack />
       </Box>
     );
   }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Box from './Box';
+import Jack from './Jack';
 
 export default class Speaker extends Component {
   constructor(props) {
@@ -52,6 +53,7 @@ export default class Speaker extends Component {
         >
           {options}
         </select>
+        <Jack />
       </Box>
     );
   }
