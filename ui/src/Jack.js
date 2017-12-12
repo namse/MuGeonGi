@@ -1,21 +1,5 @@
 import React, { Component } from 'react';
-
-let drawingJack;
-function onMouseDown(jack) {
-  drawingJack = jack;
-  console.log('down');
-}
-function onMouseUp(jack) {
-  console.log('up');
-  drawingJack = undefined;
-}
-function onMouseMove(event) {
-  console.log('move');
-  if (drawingJack) {
-    drawingJack.onMouseMove(event);
-  }
-}
-document.addEventListener('mousemove', onMouseMove);
+import Canvas from './Canvas';
 
 export default class Jack extends Component {
   constructor(props) {
@@ -24,23 +8,11 @@ export default class Jack extends Component {
       isDrawingCable: false,
     };
   }
-  onMouseMove(event) {
-    const {
-      pageX: mouseX,
-      pageY: mouseY,
-    } = event;
-    const {
-      left: x,
-      top: y,
-    } = this.startPoint.getBoundingClientRect();
-    const length = (((mouseX - x) ** 2) + ((mouseY - y) ** 2)) ** 0.5;
-    const angle = -1 * (180 / Math.PI) * Math.acos((mouseY - y) / length);
-    this.setState({
-      length,
-      angle,
-      x,
-      y,
-    });
+  onMouseDown = () => {
+    Canvas.onJackClicked(this.startPoint);
+  }
+  onMouseUp = () => {
+    Canvas.onMouseUpOnJack(this.startPoint);
   }
   render() {
     return (
@@ -49,11 +21,10 @@ export default class Jack extends Component {
         style={{
           'user-select': 'none',
         }}
-        onMouseDown={() => onMouseDown(this)}
-        onMouseUp={() => onMouseUp(this)}
+        onMouseDown={() => this.onMouseDown()}
+        onMouseUp={() => this.onMouseUp()}
       >
         MyNameIsJackBlack!
-        <Cable {...this.state} />
       </div>
     );
   }

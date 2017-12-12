@@ -2,7 +2,8 @@
   "extends": "airbnb",
   "globals": {
     "fetch": true,
-    "document": true
+    "document": true,
+    "window": true
   },
   "rules": {
     "react/jsx-filename-extension": 0,
