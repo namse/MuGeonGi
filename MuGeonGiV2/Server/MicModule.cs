@@ -14,7 +14,7 @@ namespace MuGeonGiV2.Server
         public MicModule() : base("/Mic/{uuid}")
         {
             Get["/devices"] = parameters => {
-                if (Factory.TryGetInstrument(parameters.uuid, out IInstrument instrument))
+                if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
                 {
                     var mic = (Mic)instrument;
                     var devices = mic.AvailableDevices.Select(device => device.ToString());
@@ -23,7 +23,7 @@ namespace MuGeonGiV2.Server
                 return new NotFoundResponse();
             };
             Post["/device/{deviceName}"] = parameters => {
-                if (Factory.TryGetInstrument(parameters.uuid, out IInstrument instrument))
+                if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
                 {
                     var mic = (Mic)instrument;
                     mic.SetDevice((string)parameters.deviceName);

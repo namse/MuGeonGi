@@ -1,32 +1,27 @@
 import Sprite from './Sprite';
 import getMousePosition from '../utils/getMousePosition';
+import createInstrument from '../server/createInstrument';
 
-function GetPosition(dom) {
-  const {
-    left,
-    top,
-    right,
-    bottom,
-  } = dom.getBoundingClientRect();
-  const x = (left + right) / 2;
-  const y = (top + bottom) / 2;
-  return { x, y };
-}
 
 export default class Cable extends Sprite {
-  constructor(startJackDOM) {
+  constructor(startJack) {
     super();
-    this.startJackDOM = startJackDOM;
+    createInstrument('cable')
+      .then((uuid) => {
+        this.uuid = uuid;
+        this.startJack.connectCable(uuid);
+      });
+    this.startJack = startJack;
   }
   render(ctx) {
     const {
       x: startX,
       y: startY,
-    } = GetPosition(this.startJackDOM);
+    } = this.startJack.getPosition();
     const {
       x: endX,
       y: endY,
-    } = (this.endJackDOM) ? GetPosition(this.endJackDOM) : getMousePosition();
+    } = (this.endJack) ? this.endJack.getPosition() : getMousePosition();
     ctx.moveTo(startX, startY);
     ctx.lineTo(endX, endY);
     ctx.stroke();

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Core
 {
-    public class InputJack : IJack
+    public class InputJack : Jack
     {
         public FakeStream FakeStream = new FakeStream();
-        public void Connect(Cable cable)
+        public override void Connect(Cable cable)
         {
             FakeStream.SetStream(cable.FakeStream);
         }

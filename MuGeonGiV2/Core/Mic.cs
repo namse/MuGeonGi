@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Core
 {
-    public class Mic : IInstrument
+    public class Mic : Instrument
     {
         private WasapiCapture SoundIn = new WasapiCapture();
-        public OutputJack OutputJack;
 
         public Mic()
         {

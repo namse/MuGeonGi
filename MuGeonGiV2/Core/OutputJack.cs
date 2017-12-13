@@ -10,7 +10,7 @@ using CSCore;
 
 namespace MuGeonGiV2.Core
 {
-    public class OutputJack : IJack
+    public class OutputJack : Jack
     {
         private WasapiCapture SoundIn;
         private IWaveSource WaveSource;
@@ -20,7 +20,7 @@ namespace MuGeonGiV2.Core
             WaveSource = source;
         }
 
-        public void Connect(Cable cable)
+        public override void Connect(Cable cable)
         {
             cable.PutSoundInSource(WaveSource);
         }

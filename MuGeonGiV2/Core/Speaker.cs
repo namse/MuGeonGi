@@ -1,5 +1,6 @@
 ﻿using CSCore.CoreAudioAPI;
 using CSCore.SoundOut;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Core
 {
-    public class Speaker : IInstrument
+    [JsonObject(MemberSerialization.OptIn)]
+    public class Speaker : Instrument
     {
-        public InputJack InputJack = new InputJack();
         private WasapiOut SoundOut = new WasapiOut();
 
         public Speaker()
         {
+            InputJack = new InputJack();
             MMDevice selectedOutputDevice = null;
             using (var deviceEnumerator = new MMDeviceEnumerator())
             using (var deviceCollection = deviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active))

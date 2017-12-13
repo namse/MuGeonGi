@@ -13,7 +13,8 @@ export default class Mic extends Component {
     } = props;
     fetch(`http://localhost:8080/mic/${uuid}/devices`)
       .then(res => res.json())
-      .then(devices => this.setState({ devices: ['', ...devices] }));
+      .then(devices => this.setState({ devices: ['', ...devices] }))
+      .catch(() => console.log('hi'));;
   }
   componentWillUnmount() {
     const { uuid } = this.props;
@@ -53,7 +54,7 @@ export default class Mic extends Component {
         >
           {options}
         </select>
-        <Jack />
+        <Jack {...this.props.outputJack} />
       </Box>
     );
   }

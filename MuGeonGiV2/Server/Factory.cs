@@ -10,8 +10,7 @@ namespace MuGeonGiV2.Server
 {
     public class Factory : MyModule
     {
-        private static Dictionary<string, IInstrument> InstrumentDictionary = new Dictionary<string, IInstrument>();
-        Dictionary<string, Func<IInstrument>> ConstructorDictionary = new Dictionary<string, Func<IInstrument>>();
+        Dictionary<string, Func<Instrument>> ConstructorDictionary = new Dictionary<string, Func<Instrument>>();
 
         public Factory()
         {
@@ -23,16 +22,14 @@ namespace MuGeonGiV2.Server
                 var constructor = ConstructorDictionary[name];
                 Post[$"/{name}"] = _ => {
                     var instrument = constructor();
-                    var uuid = UUID();
-                    InstrumentDictionary.Add(uuid, instrument);
-                    return uuid;
+                    return Response.AsJson(instrument);
                 };
             }
             
             Delete["/{uuid}"] = parameters => {
-                if (InstrumentDictionary.TryGetValue(parameters.uuid, out IInstrument instrument))
+                if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
                 {
-                    instrument.Destroy();
+                    instrument.Dispose();
                     return new Response
                     {
                         StatusCode = HttpStatusCode.OK,
@@ -44,10 +41,6 @@ namespace MuGeonGiV2.Server
                 };
             };
         }
-
-        private string UUID() => System.Guid.NewGuid().ToString();
-        public static bool TryGetInstrument(string uuid, out IInstrument instrument) =>
-            InstrumentDictionary.TryGetValue(uuid, out instrument);
     }
 
     public abstract class MyModule : NancyModule

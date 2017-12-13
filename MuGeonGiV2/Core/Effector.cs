@@ -6,29 +6,16 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Core
 {
-    public class Effector : Stream, IInstrument
+    public abstract class Effector : Instrument
     {
-        public InputJack InputJack = new InputJack();
-        public OutputJack OutputJack;
-
+        protected EditableStream Stream;
         public Effector()
         {
-            OutputJack = new OutputJack(this);
+            Stream = new EditableStream(Read);
+            InputJack = new InputJack();
+            OutputJack = new OutputJack(Stream);
         }
 
-        public void Destroy()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override int Read(byte[] buffer, int offset, int count)
-        {
-            return InputJack.FakeStream.Read(buffer, offset, count);
-        }
-
-        public void TurnOn()
-        {
-            // Hmm... We should mute every sound before turning on.
-        }
+        public abstract int Read(byte[] buffer, int offset, int count);
     }
 }

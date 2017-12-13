@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import createInstrument from './createInstrument';
+import createInstrument from './server/createInstrument';
 import Mic from './Mic';
 import Speaker from './Speaker';
 import Canvas from './canvas/Canvas';
@@ -12,14 +12,19 @@ class App extends Component {
       instruments: [],
     };
     createInstrument('mic')
-      .then(uuid => this.setState({
-        instruments: this.state.instruments.concat(<Mic uuid={uuid} />),
-      }));
-
+      .then((props) => {
+        console.log(props);
+        this.setState({
+          instruments: this.state.instruments.concat(<Mic {...props} />),
+        });
+      });
     createInstrument('speaker')
-      .then(uuid => this.setState({
-        instruments: this.state.instruments.concat(<Speaker uuid={uuid} />),
-      }));
+      .then((props) => {
+        console.log(props);
+        this.setState({
+          instruments: this.state.instruments.concat(<Speaker {...props} />),
+        });
+      });
   }
   render() {
     return (
@@ -28,7 +33,7 @@ class App extends Component {
         onMouseUp={() => Canvas.onMouseUp()}
       >
         {this.state.instruments}
-      </div>
+      </div >
     );
   }
 }

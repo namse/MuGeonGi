@@ -8,7 +8,7 @@ using CSCore;
 
 namespace MuGeonGiV2.Core
 {
-    public class Cable : IInstrument
+    public class Cable : Instrument
     {
         public FakeStream FakeStream = new FakeStream();
 

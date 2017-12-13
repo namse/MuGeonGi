@@ -35,17 +35,17 @@ function draw() {
 draw();
 
 export default {
-  onJackClicked(jackDOM) {
+  onJackClicked(jack) {
     if (state === canvasState.IDLE) {
       state = canvasState.CABLING;
-      connectingCable = new Cable(jackDOM);
+      connectingCable = new Cable(jack);
       sprites.push(connectingCable);
     }
   },
-  onMouseUpOnJack(jackDOM) {
+  onMouseUpOnJack(jack) {
     if (state === canvasState.CABLING) {
-      if (connectingCable.startJackDOM !== jackDOM) {
-        connectingCable.endJackDOM = jackDOM;
+      if (connectingCable.startJack !== jack) {
+        connectingCable.endJack = jack;
         cables.push(connectingCable);
       }
       state = canvasState.IDLE;

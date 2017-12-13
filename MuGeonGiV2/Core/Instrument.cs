@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 namespace MuGeonGiV2.Core
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class Jack : Storable<Jack>
+    public abstract class Instrument : Storable<Instrument>
     {
-        public abstract void Connect(Cable cable);
+        [JsonProperty]
+        public InputJack InputJack;
+        [JsonProperty]
+        public  OutputJack OutputJack;
     }
 }
