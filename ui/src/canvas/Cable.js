@@ -2,16 +2,19 @@ import Sprite from './Sprite';
 import getMousePosition from '../utils/getMousePosition';
 import createInstrument from '../server/createInstrument';
 
-
 export default class Cable extends Sprite {
   constructor(startJack) {
     super();
     createInstrument('cable')
-      .then((uuid) => {
+      .then(({ uuid }) => {
         this.uuid = uuid;
         this.startJack.connectCable(uuid);
       });
     this.startJack = startJack;
+  }
+  setEndJack(endJack) {
+    this.endJack = endJack;
+    this.endJack.connectCable(this.uuid);
   }
   render(ctx) {
     const {

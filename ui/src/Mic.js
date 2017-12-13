@@ -11,6 +11,7 @@ export default class Mic extends Component {
     const {
       uuid,
     } = props;
+    console.log(props);
     fetch(`http://localhost:8080/mic/${uuid}/devices`)
       .then(res => res.json())
       .then(devices => this.setState({ devices: ['', ...devices] }))
@@ -37,6 +38,13 @@ export default class Mic extends Component {
     })
       .then(res => console.log(`set device of mic : ${res.status}`));
   }
+  turnOn = () => {
+    const { uuid } = this.props;
+    fetch(`http://localhost:8080/mic/${uuid}/TurnOn`, {
+      method: 'post',
+    })
+      .then(res => console.log(`turn on mic : ${res.status}`));
+  }
   render() {
     const {
       devices,
@@ -54,6 +62,7 @@ export default class Mic extends Component {
         >
           {options}
         </select>
+        <button onClick={() => this.turnOn()}>Turn On</button>
         <Jack {...this.props.outputJack} />
       </Box>
     );

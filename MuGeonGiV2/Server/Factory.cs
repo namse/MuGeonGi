@@ -26,7 +26,8 @@ namespace MuGeonGiV2.Server
                 };
             }
             
-            Delete["/{uuid}"] = parameters => {
+            Delete["/{uuid}"] = parameters =>
+            {
                 if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
                 {
                     instrument.Dispose();

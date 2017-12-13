@@ -45,10 +45,5 @@ namespace MuGeonGiV2.Core
         {
             SoundIn.Start();
         }
-
-        public void Destroy()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

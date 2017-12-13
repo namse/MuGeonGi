@@ -45,7 +45,7 @@ export default {
   onMouseUpOnJack(jack) {
     if (state === canvasState.CABLING) {
       if (connectingCable.startJack !== jack) {
-        connectingCable.endJack = jack;
+        connectingCable.setEndJack(jack);
         cables.push(connectingCable);
       }
       state = canvasState.IDLE;

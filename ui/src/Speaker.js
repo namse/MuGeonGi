@@ -36,6 +36,13 @@ export default class Speaker extends Component {
     })
       .then(res => console.log(`set device of speaker : ${res.status}`));
   }
+  turnOn = () => {
+    const { uuid } = this.props;
+    fetch(`http://localhost:8080/speaker/${uuid}/TurnOn`, {
+      method: 'post',
+    })
+      .then(res => console.log(`turn on speaker : ${res.status}`));
+  }
   render() {
     const {
       devices,
@@ -53,7 +60,8 @@ export default class Speaker extends Component {
         >
           {options}
         </select>
-        <Jack />
+        <button onClick={() => this.turnOn()}>Turn On</button>
+        <Jack {...this.props.inputJack} />
       </Box>
     );
   }

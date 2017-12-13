@@ -3,6 +3,7 @@ using Nancy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,10 +11,11 @@ namespace MuGeonGiV2.Server
 {
     public class SpeakerModule : MyModule
     {
-        public SpeakerModule() : base("/speaker/{uuid}")
+        public SpeakerModule() : base("/speaker/{Uuid}")
         {
-            Get["/devices"] = parameters => {
-                if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
+            Get["/devices"] = parameters =>
+            {
+                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
                 {
                     var speaker = (Speaker)instrument;
                     var devices = speaker.AvailableDevices.Select(device => device.ToString());
@@ -21,11 +23,24 @@ namespace MuGeonGiV2.Server
                 }
                 return new NotFoundResponse();
             };
-            Post["/device/{deviceName}"] = parameters => {
-                if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
+            Post["/device/{DeviceName}"] = parameters => 
+            {
+                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
                 {
                     var speaker = (Speaker)instrument;
-                    speaker.SetDevice((string)parameters.deviceName);
+                    speaker.SetDevice((string)parameters.DeviceName);
+                    return new Response();
+                }
+                return new NotFoundResponse();
+            };
+            Post["/{MethodName}"] = parameters =>
+            {
+                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                {
+                    var speaker = (Speaker)instrument;
+                    var type = typeof(Speaker);
+                    MethodInfo method = type.GetMethod(parameters.MethodName);
+                    method.Invoke(speaker, null);
                     return new Response();
                 }
                 return new NotFoundResponse();

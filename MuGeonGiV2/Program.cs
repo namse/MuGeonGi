@@ -1,6 +1,9 @@
 ﻿using MuGeonGiV2.Core;
+using Nancy;
 using Nancy.Hosting.Self;
+using Nancy.TinyIoc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +12,23 @@ using System.Windows.Forms;
 
 namespace MuGeonGiV2
 {
+    public class CustomJsonSerializer : JsonSerializer
+    {
+        public CustomJsonSerializer()
+        {
+            this.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            this.Formatting = Formatting.Indented;
+        }
+    }
+    public class Bootstrapper : DefaultNancyBootstrapper
+    {
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        {
+            base.ConfigureApplicationContainer(container);
+
+            container.Register<JsonSerializer, CustomJsonSerializer>();
+        }
+    }
     static class Program
     {
         /// <summary>
@@ -21,6 +41,7 @@ namespace MuGeonGiV2
             // Filter();
             OnlyServer();
         }
+
 
         static void OnlyServer()
         {
