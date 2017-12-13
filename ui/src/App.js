@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import createInstrument from './createInstrument';
 import Mic from './Mic';
 import Speaker from './Speaker';
-import Canvas from './Canvas';
+import Canvas from './canvas/Canvas';
 
 class App extends Component {
   constructor(props) {
