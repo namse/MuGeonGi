@@ -6,9 +6,12 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Nancy.Bootstrapper;
+using Newtonsoft.Json.Converters;
 
 namespace MuGeonGiV2
 {
@@ -27,6 +30,13 @@ namespace MuGeonGiV2
             base.ConfigureApplicationContainer(container);
 
             container.Register<JsonSerializer, CustomJsonSerializer>();
+        }
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
+        {
+            pipelines.AfterRequest += (ctx) =>
+            {
+                Console.WriteLine($@"{ctx.Request.Path} - {ctx.Response.StatusCode}");
+            };
         }
     }
     static class Program
