@@ -26,9 +26,8 @@ export default class Jack extends Component {
     fetch(`http://localhost:8080/jack/${uuid}/connectCable/${cableUuid}`, {
       method: 'POST',
     })
-      .then(res => res.json())
-      .then((result) => {
-        console.log(result);
+      .then(res => {
+        console.log(res);
       })
   }
   onMouseDown = () => {

@@ -12,6 +12,9 @@ namespace MuGeonGiV2.Core
     public class HighpassFilter: Effector
     {
         public IWaveSource WaveSource;
+        public HighpassFilter(): this(1000) {
+        }
+
         public HighpassFilter(double frequency)
         {
             WaveSource = InputJack.FakeStream

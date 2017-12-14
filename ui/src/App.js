@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import createInstrument from './server/createInstrument';
 import Mic from './Mic';
 import Speaker from './Speaker';
+import HighpassFilter from './HighpassFilter';
 import Canvas from './canvas/Canvas';
 
 class App extends Component {
@@ -23,6 +24,13 @@ class App extends Component {
         console.log(props);
         this.setState({
           instruments: this.state.instruments.concat(<Speaker {...props} />),
+        });
+      });
+    createInstrument('HighpassFilter')
+      .then((props) => {
+        console.log(props);
+        this.setState({
+          instruments: this.state.instruments.concat(<HighpassFilter {...props} />),
         });
       });
   }
