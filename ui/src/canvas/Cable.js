@@ -5,7 +5,7 @@ import createInstrument from '../server/createInstrument';
 export default class Cable extends Sprite {
   constructor(startJack) {
     super();
-    createInstrument('cable')
+    createInstrument('Cable')
       .then(({ uuid }) => {
         this.uuid = uuid;
         this.startJack.connectCable(uuid);

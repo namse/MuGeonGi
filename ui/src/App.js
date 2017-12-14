@@ -11,14 +11,14 @@ class App extends Component {
     this.state = {
       instruments: [],
     };
-    createInstrument('mic')
+    createInstrument('Mic')
       .then((props) => {
         console.log(props);
         this.setState({
           instruments: this.state.instruments.concat(<Mic {...props} />),
         });
       });
-    createInstrument('speaker')
+    createInstrument('Speaker')
       .then((props) => {
         console.log(props);
         this.setState({

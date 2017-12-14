@@ -10,21 +10,19 @@ namespace MuGeonGiV2.Server
 {
     public class Factory : MyModule
     {
-        Dictionary<string, Func<Instrument>> ConstructorDictionary = new Dictionary<string, Func<Instrument>>();
-
         public Factory()
         {
-            ConstructorDictionary.Add("mic", () => new Mic());
-            ConstructorDictionary.Add("speaker", () => new Speaker());
-            ConstructorDictionary.Add("cable", () => new Cable());
-            foreach (var name in ConstructorDictionary.Keys)
+            Post["/{InstrumentTypeName}"] = parameters =>
             {
-                var constructor = ConstructorDictionary[name];
-                Post[$"/{name}"] = _ => {
-                    var instrument = constructor();
-                    return Response.AsJson(instrument);
-                };
-            }
+                var aseembly = typeof(Instrument).Assembly;
+                var type = aseembly.GetType($"MuGeonGiV2.Core.{parameters.InstrumentTypeName}");
+                if (type == null)
+                {
+                    return new NotFoundResponse();
+                }
+                var instrument = (Instrument)Activator.CreateInstance(type);
+                return Response.AsJson(instrument);
+            };
             
             Delete["/{uuid}"] = parameters =>
             {
