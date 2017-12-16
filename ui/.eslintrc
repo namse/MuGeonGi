@@ -3,7 +3,8 @@
   "globals": {
     "fetch": true,
     "document": true,
-    "window": true
+    "window": true,
+    "FormData": true
   },
   "rules": {
     "react/jsx-filename-extension": 0,

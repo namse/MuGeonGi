@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\AudioPlayer.cs" />
     <Compile Include="Core\Cable.cs" />
     <Compile Include="Core\EditableStream.cs" />
     <Compile Include="Core\Effector.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Speaker.cs" />
+    <Compile Include="Server\AudioPlayerModule.cs" />
     <Compile Include="Server\JackModule.cs" />
     <Compile Include="Server\Factory.cs" />
     <Compile Include="Server\MicModule.cs" />

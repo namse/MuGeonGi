@@ -4,6 +4,7 @@ import Mic from './Mic';
 import Speaker from './Speaker';
 import HighpassFilter from './HighpassFilter';
 import Canvas from './canvas/Canvas';
+import AudioPlayer from './AudioPlayer';
 
 class App extends Component {
   constructor(props) {
@@ -31,6 +32,13 @@ class App extends Component {
         console.log(props);
         this.setState({
           instruments: this.state.instruments.concat(<HighpassFilter {...props} />),
+        });
+      });
+    createInstrument('AudioPlayer')
+      .then((props) => {
+        console.log(props);
+        this.setState({
+          instruments: this.state.instruments.concat(<AudioPlayer {...props} />),
         });
       });
   }
