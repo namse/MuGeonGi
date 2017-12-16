@@ -15,35 +15,23 @@ namespace MuGeonGiV2.Server
         {
             Get["/devices"] = parameters =>
             {
-                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
                 {
-                    var speaker = (Speaker)instrument;
-                    var devices = speaker.AvailableDevices.Select(device => device.ToString());
-                    return Response.AsJson(devices);
+                    return new NotFoundResponse();
                 }
-                return new NotFoundResponse();
+                var speaker = (Speaker)instrument;
+                var devices = speaker.AvailableDevices.Select(device => device.ToString());
+                return Response.AsJson(devices);
             };
             Post["/device/{DeviceName}"] = parameters => 
             {
-                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
                 {
-                    var speaker = (Speaker)instrument;
-                    speaker.SetDevice((string)parameters.DeviceName);
-                    return new Response();
+                    return new NotFoundResponse();
                 }
-                return new NotFoundResponse();
-            };
-            Post["/{MethodName}"] = parameters =>
-            {
-                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
-                {
-                    var speaker = (Speaker)instrument;
-                    var type = typeof(Speaker);
-                    MethodInfo method = type.GetMethod(parameters.MethodName);
-                    method.Invoke(speaker, null);
-                    return new Response();
-                }
-                return new NotFoundResponse();
+                var speaker = (Speaker)instrument;
+                speaker.SetDevice((string)parameters.DeviceName);
+                return new Response();
             };
         }
     }

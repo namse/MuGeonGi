@@ -91,6 +91,7 @@
     <Compile Include="Server\JackModule.cs" />
     <Compile Include="Server\Factory.cs" />
     <Compile Include="Server\MicModule.cs" />
+    <Compile Include="Server\RpcModule.cs" />
     <Compile Include="Server\SpeakerModule.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

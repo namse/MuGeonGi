@@ -39,7 +39,7 @@ namespace MuGeonGiV2.Server
                     return new NotFoundResponse();
                 }
                 var audioPlayer = (AudioPlayer) instrument;
-                audioPlayer.Play();
+                audioPlayer.Play(); 
                 return new Response();
             };
         }

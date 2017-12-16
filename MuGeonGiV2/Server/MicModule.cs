@@ -16,35 +16,23 @@ namespace MuGeonGiV2.Server
         {
             Get["/devices"] = parameters => 
             {
-                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
                 {
-                    var mic = (Mic)instrument;
-                    var devices = mic.AvailableDevices.Select(device => device.ToString());
-                    return Response.AsJson(devices);
+                    return new NotFoundResponse();
                 }
-                return new NotFoundResponse();
+                var mic = (Mic)instrument;
+                var devices = mic.AvailableDevices.Select(device => device.ToString());
+                return Response.AsJson(devices);
             };
             Post["/device/{DeviceName}"] = parameters => 
             {
-                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
                 {
-                    var mic = (Mic)instrument;
-                    mic.SetDevice((string)parameters.DeviceName);
-                    return new Response();
+                    return new NotFoundResponse();
                 }
-                return new NotFoundResponse();
-            };
-            Post["/{MethodName}"] = parameters =>
-            {
-                if (Instrument.TryGet(parameters.Uuid, out Instrument instrument))
-                {
-                    var mic = (Mic)instrument;
-                    var type = typeof(Mic);
-                    MethodInfo method = type.GetMethod(parameters.MethodName);
-                    method.Invoke(mic, null);
-                    return new Response();
-                }
-                return new NotFoundResponse();
+                var mic = (Mic)instrument;
+                mic.SetDevice((string)parameters.DeviceName);
+                return new Response();
             };
         }
     }
