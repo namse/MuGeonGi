@@ -19,20 +19,6 @@ namespace MuGeonGiV2.Core
         public Speaker()
         {
             InputJack = new InputJack();
-            MMDevice selectedOutputDevice = null;
-            using (var deviceEnumerator = new MMDeviceEnumerator())
-            using (var deviceCollection = deviceEnumerator.EnumAudioEndpoints(DataFlow.Render, DeviceState.Active))
-            {
-                foreach (var device in deviceCollection)
-                {
-                    Console.WriteLine(device);
-                    if (device.ToString() == "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)")
-                    {
-                        selectedOutputDevice = device;
-                    }
-                }
-            }
-            SoundOut.Device = selectedOutputDevice;
         }
 
         internal void SetDevice(string deviceTag)

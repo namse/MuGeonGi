@@ -21,7 +21,12 @@ namespace MuGeonGiV2.Core
         {
             if (RealStream != null)
             {
-                return RealStream.Read(buffer, offset, count);
+                var read = RealStream.Read(buffer, offset, count);
+                if (read < count)
+                {
+                    Array.Clear(buffer, offset + read, count - read);
+                }
+                return count;
             }
             Array.Clear(buffer, offset, count);
             return count;
