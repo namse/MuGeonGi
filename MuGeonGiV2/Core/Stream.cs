@@ -9,15 +9,15 @@ namespace MuGeonGiV2.Core
 {
     public abstract class Stream : IWaveSource
     {
-        public bool CanSeek => false;
+        public virtual bool CanSeek => false;
 
-        public long Position { get => 0; set => throw new InvalidOperationException(); }
+        public virtual long Position { get => 0; set => throw new InvalidOperationException(); }
 
-        public long Length => 0;
+        public virtual long Length => 0;
 
-        public WaveFormat WaveFormat => new WaveFormat(44100, 24, 1);
+        public virtual WaveFormat WaveFormat => new WaveFormat(44100, 16, 1);
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             GC.SuppressFinalize(this);
         }

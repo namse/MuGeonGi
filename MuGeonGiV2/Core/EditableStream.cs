@@ -8,7 +8,7 @@ namespace MuGeonGiV2.Core
 {
     public class EditableStream : Stream
     {
-        private Func<byte[], int, int, int> ReadFunc;
+        private readonly Func<byte[], int, int, int> ReadFunc;
         public EditableStream(Func<byte[], int, int, int> readFunc)
         {
             ReadFunc = readFunc;
@@ -18,6 +18,5 @@ namespace MuGeonGiV2.Core
         {
             return ReadFunc(buffer, offset, count);
         }
-
     }
 }

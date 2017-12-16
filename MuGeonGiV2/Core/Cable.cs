@@ -12,11 +12,6 @@ namespace MuGeonGiV2.Core
     {
         public FakeStream FakeStream = new FakeStream();
 
-        public void Destroy()
-        {
-            throw new NotImplementedException();
-        }
-
         internal void PutSoundInSource(IWaveSource waveSource)
         {
             FakeStream.SetStream(waveSource);

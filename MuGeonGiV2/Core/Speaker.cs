@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using CSCore;
 
 namespace MuGeonGiV2.Core
 {
     [JsonObject(MemberSerialization.OptIn)]
     public class Speaker : Instrument
     {
-        private WasapiOut SoundOut = new WasapiOut();
+        private readonly WasapiOut SoundOut = new WasapiOut();
 
         public Speaker()
         {
@@ -51,11 +52,6 @@ namespace MuGeonGiV2.Core
                     return deviceCollection.ToList();
                 }
             }
-        }
-
-        public void Destroy()
-        {
-            throw new NotImplementedException();
         }
 
         public void TurnOn()

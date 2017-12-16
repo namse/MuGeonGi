@@ -11,17 +11,20 @@ namespace MuGeonGiV2.Core
     {
         private IWaveSource RealStream;
 
+        public override void Dispose()
+        {
+            RealStream.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
         public override int Read(byte[] buffer, int offset, int count)
         {
             if (RealStream != null)
             {
                 return RealStream.Read(buffer, offset, count);
             }
-            else
-            {
-                Array.Clear(buffer, offset, count);
-                return count;
-            }
+            Array.Clear(buffer, offset, count);
+            return count;
         }
 
         internal void SetStream(IWaveSource stream)

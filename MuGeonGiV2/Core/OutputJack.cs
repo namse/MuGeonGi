@@ -12,8 +12,7 @@ namespace MuGeonGiV2.Core
 {
     public class OutputJack : Jack
     {
-        private WasapiCapture SoundIn;
-        private IWaveSource WaveSource;
+        private readonly IWaveSource WaveSource;
 
         public OutputJack(IWaveSource source)
         {
@@ -23,11 +22,6 @@ namespace MuGeonGiV2.Core
         public override void Connect(Cable cable)
         {
             cable.PutSoundInSource(WaveSource);
-        }
-
-        public void Destroy()
-        {
-            throw new NotImplementedException();
         }
     }
 }

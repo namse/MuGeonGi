@@ -30,7 +30,7 @@ namespace MuGeonGiV2.Core
             WaveSource = InputJack.FakeStream
                 .ToSampleSource()
                 .AppendSource(CSCore.Streams.Effects.Equalizer.Create10BandEqualizer, out MyEqualizer)
-                .ToWaveSource(24);
+                .ToWaveSource(16);
         }
 
         public void SetFilter(Frequencies frequency, double gain)

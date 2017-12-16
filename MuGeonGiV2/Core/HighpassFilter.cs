@@ -20,7 +20,7 @@ namespace MuGeonGiV2.Core
             WaveSource = InputJack.FakeStream
                 .ToSampleSource()
                 .AppendSource(x => new BiQuadFilterSource(x), out var BiQuadFilterSource)
-                .ToWaveSource(24);
+                .ToWaveSource(16);
             BiQuadFilterSource.Filter = new CSCore.DSP.HighpassFilter(InputJack.FakeStream.WaveFormat.SampleRate, frequency);
         }
 
