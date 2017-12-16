@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import Draggable from 'react-draggable';
 import Jack from './Jack';
 
 const Container = styled.div`
@@ -41,14 +42,16 @@ export default class SingleBox extends Component {
       outputJack,
     } = this.props;
     return (
-      <Container>
-        {this.renderJack(inputJack)}
-        <Content>
-          a
-          {this.props.children}
-        </Content>
-        {this.renderJack(outputJack)}
-      </Container>
+      <Draggable>
+        <Container>
+          {this.renderJack(inputJack)}
+          <Content>
+            a
+            {this.props.children}
+          </Content>
+          {this.renderJack(outputJack)}
+        </Container>
+      </Draggable>
     );
   }
 }
