@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import createInstrument from './server/createInstrument';
-import Mic from './Mic';
-import Speaker from './Speaker';
-import HighpassFilter from './HighpassFilter';
+import styled from 'styled-components';
 import Canvas from './canvas/Canvas';
-import AudioPlayer from './AudioPlayer';
+import Menu from './Menu';
+
+const Container = styled.div`
+  overflow: hidden;
+`
+const PlayGround = styled.div`
+  width: calc(100vw - 100px);
+  height: 100vh;
+  border: 1px solid red;
+  left: 100px;
+  position: fixed; /* Stay in place */  
+`;
 
 class App extends Component {
   constructor(props) {
@@ -13,43 +21,23 @@ class App extends Component {
     this.state = {
       instruments: [],
     };
-    createInstrument('Mic')
-      .then((props) => {
-        console.log(props);
-        this.setState({
-          instruments: this.state.instruments.concat(<Mic {...props} />),
-        });
-      });
-    createInstrument('Speaker')
-      .then((props) => {
-        console.log(props);
-        this.setState({
-          instruments: this.state.instruments.concat(<Speaker {...props} />),
-        });
-      });
-    createInstrument('HighpassFilter')
-      .then((props) => {
-        console.log(props);
-        this.setState({
-          instruments: this.state.instruments.concat(<HighpassFilter {...props} />),
-        });
-      });
-    createInstrument('AudioPlayer')
-      .then((props) => {
-        console.log(props);
-        this.setState({
-          instruments: this.state.instruments.concat(<AudioPlayer {...props} />),
-        });
-      });
+  }
+  onNewInstrument(instrument) {
+    this.setState({
+      instruments: this.state.instruments.concat(instrument),
+    });
   }
   render() {
     return (
-      <div
-        className="App"
-        onMouseUp={() => Canvas.onMouseUp()}
-      >
-        {this.state.instruments}
-      </div >
+      <Container>
+        <Menu onNewInstrument={inst => this.onNewInstrument(inst)} />
+        <PlayGround
+          className="App"
+          onMouseUp={() => Canvas.onMouseUp()}
+        >
+          {this.state.instruments}
+        </PlayGround >
+      </Container>
     );
   }
 }

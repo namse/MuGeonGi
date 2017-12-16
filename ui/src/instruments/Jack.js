@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Canvas from './canvas/Canvas';
+import Canvas from '../canvas/Canvas';
 
 export default class Jack extends Component {
   constructor(props) {
