@@ -13,7 +13,6 @@ namespace MuGeonGiV2.Core
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            Console.WriteLine(count);
             if (RealStream != null)
             {
                 return RealStream.Read(buffer, offset, count);

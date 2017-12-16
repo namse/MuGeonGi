@@ -42,10 +42,10 @@ export default class SingleBox extends Component {
       outputJack,
     } = this.props;
     return (
-      <Draggable>
+      <Draggable handle=".content">
         <Container>
           {this.renderJack(inputJack)}
-          <Content>
+          <Content className="content">
             a
             {this.props.children}
           </Content>

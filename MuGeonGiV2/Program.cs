@@ -62,9 +62,7 @@ namespace MuGeonGiV2
             Console.WriteLine("Running on http://localhost:8080");
             host.Start();
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Console.ReadLine();
         }
 
         static void MicToSpeaker()

@@ -27,7 +27,6 @@ namespace MuGeonGiV2.Core
                     Console.WriteLine(device);
                     if (device.ToString() == "VoiceMeeter Aux Input(VB-Audio VoiceMeeter AUX VAIO)")
                     {
-                        Console.WriteLine(device);
                         selectedOutputDevice = device;
                     }
                 }
