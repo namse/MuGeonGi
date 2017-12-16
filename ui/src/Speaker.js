@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Box from './Box';
+import SingleBox from './SingleBox';
 import Jack from './Jack';
 
 export default class Speaker extends Component {
@@ -50,7 +50,7 @@ export default class Speaker extends Component {
     } = this.state;
     const options = devices.map(device => <option value={device}>{device}</option>);
     return (
-      <Box>
+      <SingleBox {...this.props}>
         Speaker
         Device:
         <select
@@ -61,8 +61,7 @@ export default class Speaker extends Component {
           {options}
         </select>
         <button onClick={() => this.turnOn()}>Turn On</button>
-        <Jack {...this.props.inputJack} />
-      </Box>
+      </SingleBox>
     );
   }
 }

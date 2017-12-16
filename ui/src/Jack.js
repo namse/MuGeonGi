@@ -42,11 +42,15 @@ export default class Jack extends Component {
         ref={(startPoint) => { this.startPoint = startPoint; }}
         style={{
           'user-select': 'none',
+          width: '20px',
+          height: '20px',
+          position: 'relative',
+          top: '40px'
         }}
         onMouseDown={() => this.onMouseDown()}
         onMouseUp={() => this.onMouseUp()}
       >
-        MyNameIsJackBlack!
+        O
       </div>
     );
   }
