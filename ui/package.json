@@ -5,6 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "electron": "^1.7.9",
+    "keycode": "^2.1.9",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-draggable": "^3.0.4",

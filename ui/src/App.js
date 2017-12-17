@@ -5,7 +5,7 @@ import Menu from './Menu';
 
 const Container = styled.div`
   overflow: hidden;
-`
+`;
 const PlayGround = styled.div`
   width: calc(100vw - 100px);
   height: 100vh;

@@ -15,6 +15,7 @@ namespace MuGeonGiV2
         public Form1()
         {
             InitializeComponent();
+            KeyboardHook.Initialize();
         }
     }
 }

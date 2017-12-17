@@ -4,9 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using CSCore.Streams.Effects;
 using MuGeonGiV2.Core;
 using Nancy;
+using Nancy.Extensions;
+using Newtonsoft.Json.Linq;
 
 namespace MuGeonGiV2.Server
 {
@@ -40,6 +43,22 @@ namespace MuGeonGiV2.Server
                 }
                 var audioPlayer = (AudioPlayer) instrument;
                 audioPlayer.Play(); 
+                return new Response();
+            };
+            Post["/bindkey"] = parameters =>
+            {
+                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                {
+                    return new NotFoundResponse();
+                }
+                var audioPlayer = (AudioPlayer) instrument;
+                var jsonString = Request.Body.AsString();
+                var data = JObject.Parse(jsonString);
+                var shiftKey = (bool)data["shiftKey"];
+                var ctrlKey = (bool)data["ctrlKey"];
+                var altKey = (bool)data["altKey"];
+                var key = (Keys)(int)data["key"];
+                audioPlayer.BindKey(shiftKey, ctrlKey, altKey, key);
                 return new Response();
             };
         }
