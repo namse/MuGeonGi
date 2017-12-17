@@ -14,14 +14,14 @@ namespace MuGeonGiV2.Core
     public class Mic : Instrument
     {
         private readonly WasapiCapture SoundIn = new WasapiCapture();
-
+        private RealTimeSoundInSource SoundInSource;
         public Mic()
         {
             SoundIn.Initialize();
-            var soundInSource = new SoundInSource(SoundIn);
-            var pcm16Source = new SampleToPcm16(soundInSource.ToSampleSource());
+            SoundInSource = new RealTimeSoundInSource(SoundIn);
+            var source = new SampleToPcm16(SoundInSource.ToSampleSource());
 
-            OutputJack = new OutputJack(pcm16Source);
+            OutputJack = new OutputJack(source);
         }
 
         public void SetDevice(string deviceTag)
@@ -44,6 +44,10 @@ namespace MuGeonGiV2.Core
         public void TurnOn()
         {
             SoundIn.Start();
+            SoundIn.DataAvailable += (s, e) =>
+            {
+                Console.WriteLine((SoundInSource.Length / SoundInSource.WaveFormat.BytesPerSecond));
+            };
         }
     }
 }

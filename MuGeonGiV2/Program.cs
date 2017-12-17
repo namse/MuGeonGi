@@ -10,8 +10,16 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using CSCore;
+using CSCore.Codecs;
+using CSCore.CoreAudioAPI;
+using CSCore.SoundIn;
+using CSCore.SoundOut;
+using CSCore.Streams;
+using CSCore.Streams.Effects;
 using Nancy.Bootstrapper;
 using Newtonsoft.Json.Converters;
+using Equalizer = MuGeonGiV2.Core.Equalizer;
 
 namespace MuGeonGiV2
 {
@@ -52,6 +60,32 @@ namespace MuGeonGiV2
             OnlyServer();
         }
 
+        static ISampleSource CreateEqulizer(ISampleSource existedSource)
+        {
+            var equalizer = new CSCore.Streams.Effects.Equalizer(existedSource);
+            return equalizer;
+        }
+        static void Jungrue()
+        {
+            var soundIn = new WasapiCapture();
+            var soundInSource = new SoundInSource(soundIn);
+            var source = soundInSource
+                .ToSampleSource()
+                .AppendSource(CreateEqulizer, out var _equalizer)
+                .AppendSource(CreateEqulizer)
+                .ToWaveSource();
+
+            // 여기서 Equalizer 어떻게 조종하지?
+            var equalizer = (CSCore.Streams.Effects.Equalizer) _equalizer;
+            equalizer.SampleFilters[0].AverageGainDB = 5;
+            equalizer.SampleFilters[4].AverageGainDB = 5;
+            equalizer.SampleFilters[9].AverageGainDB = 5;
+
+            foreach (var sampleFilter in equalizer.SampleFilters)
+            {
+                Console.WriteLine($"{sampleFilter.AverageFrequency} - {sampleFilter.AverageGainDB}");
+            }
+        }
 
         static void OnlyServer()
         {
@@ -62,7 +96,10 @@ namespace MuGeonGiV2
             Console.WriteLine("Running on http://localhost:8080");
             host.Start();
 
-            Console.ReadLine();
+            // Console.ReadLine();
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
 
         static void MicToSpeaker()

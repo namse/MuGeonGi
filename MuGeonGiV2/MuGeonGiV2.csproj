@@ -85,8 +85,11 @@
     <Compile Include="Core\Instrument.cs" />
     <Compile Include="Core\Jack.cs" />
     <Compile Include="Core\LowpassFilter.cs" />
+    <Compile Include="Core\MyFixedSizeBuffer.cs" />
+    <Compile Include="Core\MyWriteableBufferingSource.cs" />
     <Compile Include="Core\OutputJack.cs" />
     <Compile Include="Core\FakeStream.cs" />
+    <Compile Include="Core\RealTimeSoundInSource.cs" />
     <Compile Include="Core\Storable.cs" />
     <Compile Include="Core\Stream.cs" />
     <Compile Include="Form1.cs">

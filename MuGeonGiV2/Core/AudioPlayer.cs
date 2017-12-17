@@ -9,7 +9,6 @@ using CSCore.Codecs;
 using CSCore.Codecs.AAC;
 using CSCore.Streams;
 using CSCore.Streams.SampleConverter;
-using EventHook;
 using FMUtils.KeyboardHook;
 
 namespace MuGeonGiV2.Core
