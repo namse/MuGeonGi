@@ -17,6 +17,7 @@ using CSCore.SoundIn;
 using CSCore.SoundOut;
 using CSCore.Streams;
 using CSCore.Streams.Effects;
+using CSCore.Streams.SampleConverter;
 using Nancy.Bootstrapper;
 using Newtonsoft.Json.Converters;
 using Equalizer = MuGeonGiV2.Core.Equalizer;
@@ -58,6 +59,32 @@ namespace MuGeonGiV2
             // MicToSpeaker();
             // Filter();
             OnlyServer();
+            //Test();
+        }
+
+        static void Test()
+        {
+            var soundIn = new WasapiCapture();
+            soundIn.Initialize();
+            var soundInSource = new RealTimeSoundInSource(soundIn);
+
+            var soundOut = new WasapiOut();
+            soundOut.Initialize(soundInSource);
+            soundIn.Start();
+            soundOut.Play();
+
+            soundOut.Stopped += (s, e) =>
+            {
+                Console.WriteLine("I'm dead but not dead, P.P.A.P");
+                Task.Run(() =>
+                {
+                    soundOut.Play();
+                });
+            };
+
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
         }
 
         static ISampleSource CreateEqulizer(ISampleSource existedSource)
@@ -67,24 +94,24 @@ namespace MuGeonGiV2
         }
         static void Jungrue()
         {
-            var soundIn = new WasapiCapture();
-            var soundInSource = new SoundInSource(soundIn);
-            var source = soundInSource
-                .ToSampleSource()
-                .AppendSource(CreateEqulizer, out var _equalizer)
-                .AppendSource(CreateEqulizer)
-                .ToWaveSource();
+            //var soundIn = new WasapiCapture();
+            //var soundInSource = new SoundInSource(soundIn);
+            //var source = soundInSource
+            //    .ToSampleSource()
+            //    .AppendSource(CreateEqulizer, out var equalizer)
+            //    .AppendSource(CreateEqulizer)
+            //    .ToWaveSource();
 
-            // 여기서 Equalizer 어떻게 조종하지?
-            var equalizer = (CSCore.Streams.Effects.Equalizer) _equalizer;
-            equalizer.SampleFilters[0].AverageGainDB = 5;
-            equalizer.SampleFilters[4].AverageGainDB = 5;
-            equalizer.SampleFilters[9].AverageGainDB = 5;
+            //// 여기서 Equalizer 어떻게 조종하지?
+            //var equalizer = (CSCore.Streams.Effects.Equalizer) equalizer;
+            //equalizer.SampleFilters[0].AverageGainDB = 5;
+            //equalizer.SampleFilters[4].AverageGainDB = 5;
+            //equalizer.SampleFilters[9].AverageGainDB = 5;
 
-            foreach (var sampleFilter in equalizer.SampleFilters)
-            {
-                Console.WriteLine($"{sampleFilter.AverageFrequency} - {sampleFilter.AverageGainDB}");
-            }
+            //foreach (var sampleFilter in equalizer.SampleFilters)
+            //{
+            //    Console.WriteLine($"{sampleFilter.AverageFrequency} - {sampleFilter.AverageGainDB}");
+            //}
         }
 
         static void OnlyServer()

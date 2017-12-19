@@ -13,15 +13,16 @@ namespace MuGeonGiV2.Core
 {
     public class Mic : Instrument
     {
-        private readonly WasapiCapture SoundIn = new WasapiCapture();
-        private RealTimeSoundInSource SoundInSource;
+        public readonly WasapiCapture SoundIn = new WasapiCapture();
+        public readonly RealTimeSoundInSource SoundInSource;
+        public override bool IsEndPoint => true;
+
         public Mic()
         {
             SoundIn.Initialize();
             SoundInSource = new RealTimeSoundInSource(SoundIn);
-            var source = new SampleToPcm16(SoundInSource.ToSampleSource());
 
-            OutputJack = new OutputJack(source);
+            OutputJack = new OutputJack(this);
         }
 
         public void SetDevice(string deviceTag)

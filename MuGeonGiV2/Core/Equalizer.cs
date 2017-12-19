@@ -11,32 +11,33 @@ namespace MuGeonGiV2.Core
     {
         public enum Frequencies : int
         {
-            HZ_31 = 0,
-            HZ_62,
-            HZ_125,
-            HZ_250,
-            HZ_500,
-            HZ_1000,
-            HZ_2000,
-            HZ_4000,
-            HZ_8000,
-            HZ_16000,
+            Hz31 = 0,
+            Hz62,
+            Hz125,
+            Hz250,
+            Hz500,
+            Hz1000,
+            Hz2000,
+            Hz4000,
+            Hz8000,
+            Hz16000,
         }
 
         public IWaveSource WaveSource;
-        private CSCore.Streams.Effects.Equalizer MyEqualizer;
+        private CSCore.Streams.Effects.Equalizer _myEqualizer;
         public Equalizer()
         {
-            WaveSource = InputJack.FakeStream
-                .ToSampleSource()
-                .AppendSource(CSCore.Streams.Effects.Equalizer.Create10BandEqualizer, out MyEqualizer)
-                .ToWaveSource(16);
+            // TODO
+            //WaveSource = InputJack.FakeStream
+            //    .ToSampleSource()
+            //    .AppendSource(CSCore.Streams.Effects.Equalizer.Create10BandEqualizer, out _myEqualizer)
+            //    .ToWaveSource(16);
         }
 
         public void SetFilter(Frequencies frequency, double gain)
         {
             int index = (int)frequency;
-            MyEqualizer.SampleFilters[index].AverageGainDB = gain;
+            _myEqualizer.SampleFilters[index].AverageGainDB = gain;
         }
 
         public override int Read(byte[] buffer, int offset, int count)

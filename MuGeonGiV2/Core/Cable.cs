@@ -8,13 +8,47 @@ using CSCore;
 
 namespace MuGeonGiV2.Core
 {
+    public static class CableExtension {
+        public static void Connect(this Jack jack, Cable cable)
+        {
+            if (jack is OutputJack outputJack)
+            {
+                cable.OutputJack = outputJack;
+            }
+            else
+            {
+                cable.InputJack = (InputJack)jack;
+            }
+            jack.Cable = cable;
+            cable.OnConnect();
+        }
+    }
     public class Cable : Instrument
     {
-        public FakeStream FakeStream = new FakeStream();
+        public override ICircuitNode Next => InputJack;
+        public override ICircuitNode Previous => OutputJack;
+        public override bool IsEndPoint => false;
 
-        internal void PutSoundInSource(IWaveSource waveSource)
+        internal void OnConnect()
         {
-            FakeStream.SetStream(waveSource);
+            if (Previous == null || Next == null)
+            {
+                return;
+            }
+            var previousEndpoint = Previous.FindEndPoint(this);
+            var nextEndpoint = Next.FindEndPoint(this);
+            if (previousEndpoint == null || nextEndpoint == null)
+            {
+                return;
+            }
+
+            // TODO : BEGIN Intialize, Start, Play
+            var speaker = (Speaker) nextEndpoint;
+            var mic = (Mic) previousEndpoint;
+
+            speaker.Initialize(mic.SoundInSource);
+            mic.SoundIn.Start();
+            speaker.Play();
         }
     }
 }

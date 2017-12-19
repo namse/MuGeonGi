@@ -14,18 +14,19 @@ namespace MuGeonGiV2.Core
     [JsonObject(MemberSerialization.OptIn)]
     public class Speaker : Instrument
     {
-        private readonly WasapiOut SoundOut = new WasapiOut();
+        private readonly WasapiOut _soundOut = new WasapiOut();
+        public override bool IsEndPoint => true;
 
         public Speaker()
         {
-            InputJack = new InputJack();
+            InputJack = new InputJack(this);
         }
 
         internal void SetDevice(string deviceTag)
         {
             var device = AvailableDevices.Find(availableDevice => availableDevice.ToString() == deviceTag);
             // TODO: device 바꾸면 연결된게 다 나갈라지 않나요?
-            SoundOut.Device = device;
+            _soundOut.Device = device;
         }
 
         public List<MMDevice> AvailableDevices
@@ -40,17 +41,26 @@ namespace MuGeonGiV2.Core
             }
         }
 
+
+        public void Initialize(IWaveSource source)
+        {
+            _soundOut.Initialize(source);
+        }
         public void TurnOn()
         {
-            SoundOut.Initialize(InputJack.FakeStream);
-            SoundOut.Play();
+            // TODO 나중에 이거 지우셈. Play로 통일!
+            Play();
+        }
 
-            SoundOut.Stopped += (s, e) =>
+        public void Play()
+        {
+            _soundOut.Play();
+            _soundOut.Stopped += (s, e) =>
             {
                 Console.WriteLine("I'm dead but not dead, P.P.A.P");
                 Task.Run(() =>
                 {
-                    SoundOut.Play();
+                    _soundOut.Play();
                 });
             };
         }

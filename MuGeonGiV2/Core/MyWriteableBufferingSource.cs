@@ -53,7 +53,7 @@ namespace MuGeonGiV2.Core
 
             _waveFormat = waveFormat;
             _buffer = new MyFixedSizeBuffer<byte>(bufferSize);
-            FillWithZeros = true;
+             FillWithZeros = true;
         }
 
         /// <summary>

@@ -8,15 +8,15 @@ namespace MuGeonGiV2.Core
 {
     public class EditableStream : Stream
     {
-        private readonly Func<byte[], int, int, int> ReadFunc;
+        private readonly Func<byte[], int, int, int> _readFunc;
         public EditableStream(Func<byte[], int, int, int> readFunc)
         {
-            ReadFunc = readFunc;
+            _readFunc = readFunc;
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            return ReadFunc(buffer, offset, count);
+            return _readFunc(buffer, offset, count);
         }
     }
 }

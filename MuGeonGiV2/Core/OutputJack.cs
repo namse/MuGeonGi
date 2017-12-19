@@ -12,16 +12,13 @@ namespace MuGeonGiV2.Core
 {
     public class OutputJack : Jack
     {
-        private readonly IWaveSource WaveSource;
+        private readonly IWaveSource _waveSource;
 
-        public OutputJack(IWaveSource source)
-        {
-            WaveSource = source;
-        }
+        public override ICircuitNode Next => Cable;
+        public override ICircuitNode Previous => Instrument;
 
-        public override void Connect(Cable cable)
+        public OutputJack(Instrument instrument) : base(instrument)
         {
-            cable.PutSoundInSource(WaveSource);
         }
     }
 }

@@ -9,11 +9,13 @@ namespace MuGeonGiV2.Core
 {
     public class InputJack : Jack
     {
-        public FakeStream FakeStream = new FakeStream();
-        
-        public override void Connect(Cable cable)
+        private readonly IWaveSource _waveSource;
+
+        public override ICircuitNode Next => Instrument;
+        public override ICircuitNode Previous => Cable;
+
+        public InputJack(Instrument instrument) : base(instrument)
         {
-            FakeStream.SetStream(cable.FakeStream);
         }
     }
 }

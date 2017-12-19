@@ -9,11 +9,14 @@ namespace MuGeonGiV2.Core
     public abstract class Effector : Instrument
     {
         protected EditableStream Stream;
+
+        public override bool IsEndPoint { get; }
+
         protected Effector()
         {
             Stream = new EditableStream(Read);
-            InputJack = new InputJack();
-            OutputJack = new OutputJack(Stream);
+            InputJack = new InputJack(this);
+            OutputJack = new OutputJack(this);
         }
 
         public abstract int Read(byte[] buffer, int offset, int count);

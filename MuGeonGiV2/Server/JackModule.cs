@@ -14,11 +14,11 @@ namespace MuGeonGiV2.Server
         {
             Post["/connectCable/{CableUuid}"] = parameters =>
             {
-                if (!Instrument.TryGet(parameters.CableUuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.CableUuid, out Storable instrument))
                 {
                     return new NotFoundResponse();
                 }
-                if (!Jack.TryGet(parameters.Uuid, out Jack jack))
+                if (!Storable.TryGet(parameters.Uuid, out Jack jack))
                 {
                     return new NotFoundResponse();
                 }

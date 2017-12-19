@@ -17,11 +17,12 @@ namespace MuGeonGiV2.Core
 
         public HighpassFilter(double frequency)
         {
-            WaveSource = InputJack.FakeStream
-                .ToSampleSource()
-                .AppendSource(x => new BiQuadFilterSource(x), out var BiQuadFilterSource)
-                .ToWaveSource(16);
-            BiQuadFilterSource.Filter = new CSCore.DSP.HighpassFilter(InputJack.FakeStream.WaveFormat.SampleRate, frequency);
+            // TODO
+            //WaveSource = InputJack.FakeStream
+            //    .ToSampleSource()
+            //    .AppendSource(x => new BiQuadFilterSource(x), out var biQuadFilterSource)
+            //    .ToWaveSource(16);
+            //biQuadFilterSource.Filter = new CSCore.DSP.HighpassFilter(InputJack.FakeStream.WaveFormat.SampleRate, frequency);
         }
 
         public override int Read(byte[] buffer, int offset, int count)

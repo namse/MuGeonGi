@@ -50,7 +50,7 @@ namespace MuGeonGiV2.Core
                 {
                     var remainedLength = count - length1;
                     var offset2 = _buffer.Length - remainedLength <= lastWrittenOffset
-                        ? offset1 + 1
+                        ? lastWrittenOffset
                         : _buffer.Length - remainedLength;
                     var length2 = _buffer.Length - offset2;
                     Array.Copy(buffer, offset + count - length1 - length2, _buffer, offset2, length2);

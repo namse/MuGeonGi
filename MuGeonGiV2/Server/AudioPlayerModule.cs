@@ -19,7 +19,7 @@ namespace MuGeonGiV2.Server
         {
             Post["/upload"] = parameters =>
             {
-                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.Uuid, out Instrument instrument))
                 {
                     return new NotFoundResponse();
                 }
@@ -37,21 +37,19 @@ namespace MuGeonGiV2.Server
             };
             Post["/play"] = parameters =>
             {
-                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.Uuid, out AudioPlayer audioPlayer))
                 {
                     return new NotFoundResponse();
                 }
-                var audioPlayer = (AudioPlayer) instrument;
                 audioPlayer.Play(); 
                 return new Response();
             };
             Post["/bindkey"] = parameters =>
             {
-                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.Uuid, out AudioPlayer audioPlayer))
                 {
                     return new NotFoundResponse();
                 }
-                var audioPlayer = (AudioPlayer) instrument;
                 var jsonString = Request.Body.AsString();
                 var data = JObject.Parse(jsonString);
                 var shiftKey = (bool)data["shiftKey"];

@@ -9,19 +9,19 @@ namespace MuGeonGiV2.Core
 {
     public class FakeStream : Stream
     {
-        private IWaveSource RealStream;
+        private IWaveSource _realStream;
 
         public override void Dispose()
         {
-            RealStream.Dispose();
+            _realStream.Dispose();
             GC.SuppressFinalize(this);
         }
 
         public override int Read(byte[] buffer, int offset, int count)
         {
-            if (RealStream != null)
+            if (_realStream != null)
             {
-                var read = RealStream.Read(buffer, offset, count);
+                var read = _realStream.Read(buffer, offset, count);
                 if (read < count)
                 {
                     Array.Clear(buffer, offset + read, count - read);
@@ -34,7 +34,7 @@ namespace MuGeonGiV2.Core
 
         internal void SetStream(IWaveSource stream)
         {
-            RealStream = stream;
+            _realStream = stream;
         }
     }
 }

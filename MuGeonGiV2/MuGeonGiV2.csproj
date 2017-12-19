@@ -23,13 +23,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -77,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Core\AudioPlayer.cs" />
     <Compile Include="Core\Cable.cs" />
+    <Compile Include="Core\CircuitNode.cs" />
     <Compile Include="Core\EditableStream.cs" />
     <Compile Include="Core\Effector.cs" />
     <Compile Include="Core\Equalizer.cs" />

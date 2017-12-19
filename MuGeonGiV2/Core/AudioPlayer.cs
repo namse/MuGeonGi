@@ -22,44 +22,45 @@ namespace MuGeonGiV2.Core
     }
     public class AudioPlayer: Instrument
     {
-        private readonly EditableStream Stream;
-        private IWaveSource AudioSource;
-        private KeyBindingInfo KeyBindingInfo;
+        private readonly EditableStream _stream;
+        private IWaveSource _audioSource;
+        private KeyBindingInfo _keyBindingInfo;
+        public override bool IsEndPoint => true;
         public AudioPlayer()
         {
-            Stream = new EditableStream(Read);
-            OutputJack = new OutputJack(Stream);
+            _stream = new EditableStream(Read);
+            OutputJack = new OutputJack(this);
             KeyboardHook.Hook.KeyDownEvent += KeyDown;
         }
 
         public void SetFile(string filePath)
         {
-            AudioSource = CodecFactory.Instance.GetCodec(filePath)
+            _audioSource = CodecFactory.Instance.GetCodec(filePath)
                 .ChangeSampleRate(44100)
                 .ToSampleSource()
                 .ToWaveSource(16);
-            if (AudioSource.WaveFormat.Channels == 2)
+            if (_audioSource.WaveFormat.Channels == 2)
             {
-                AudioSource = AudioSource.ToMono();
+                _audioSource = _audioSource.ToMono();
             }
-            AudioSource.Position = AudioSource.Length;
+            _audioSource.Position = _audioSource.Length;
         }
 
         public void Play()
         {
-            AudioSource.Position = 0;
+            _audioSource.Position = 0;
         }
 
         public int Read(byte[] buffer, int offset, int count)
         {
-            if (AudioSource != null)
+            if (_audioSource != null)
             {
-                var read = AudioSource.Read(buffer, offset, count);
-                var availableLength = (AudioSource.Length - AudioSource.Position);
+                var read = _audioSource.Read(buffer, offset, count);
+                var availableLength = (_audioSource.Length - _audioSource.Position);
                 // Console.WriteLine($"{count}-{read}-{availableLength}");
                 if (availableLength <= 0)
                 {
-                    AudioSource.Position = AudioSource.Length;
+                    _audioSource.Position = _audioSource.Length;
                     Array.Clear(buffer, offset + read + (int)availableLength, count - read);
                     return count;
                 }
@@ -78,7 +79,7 @@ namespace MuGeonGiV2.Core
 
         public void BindKey(bool shiftKey, bool ctrlKey, bool altKey, Keys key)
         {
-            KeyBindingInfo = new KeyBindingInfo()
+            _keyBindingInfo = new KeyBindingInfo()
             {
                 ShiftKey = shiftKey,
                 CtrlKey = ctrlKey,
@@ -89,10 +90,10 @@ namespace MuGeonGiV2.Core
 
         private void KeyDown(KeyboardHookEventArgs e)
         {
-            if (KeyBindingInfo?.ShiftKey != e.isShiftPressed
-                || KeyBindingInfo.CtrlKey != e.isCtrlPressed
-                || KeyBindingInfo.AltKey != e.isAltPressed
-                || KeyBindingInfo.Key != e.Key)
+            if (_keyBindingInfo?.ShiftKey != e.isShiftPressed
+                || _keyBindingInfo.CtrlKey != e.isCtrlPressed
+                || _keyBindingInfo.AltKey != e.isAltPressed
+                || _keyBindingInfo.Key != e.Key)
             {
                 return;
             }
