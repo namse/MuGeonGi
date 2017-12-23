@@ -12,6 +12,10 @@ namespace MuGeonGiV2.Server
     {
         public Factory()
         {
+            Options["*"] = _ =>
+            {
+                return new Response();
+            };
             Post["/{InstrumentTypeName}"] = parameters =>
             {
                 var aseembly = typeof(Instrument).Assembly;
@@ -48,7 +52,7 @@ namespace MuGeonGiV2.Server
         {
             After.AddItemToEndOfPipeline((ctx) => ctx.Response
             .WithHeader("Access-Control-Allow-Origin", "*")
-            .WithHeader("Access-Control-Allow-Methods", "POST,GET")
+            .WithHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, HEAD, OPTIONS")
             .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type"));
         }
     }

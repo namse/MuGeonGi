@@ -42,6 +42,13 @@ namespace MuGeonGiV2
         }
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            pipelines.AfterRequest.AddItemToEndOfPipeline(ctx =>
+            {
+                ctx.Response
+                    .WithHeader("Access-Control-Allow-Origin", "*")
+                    .WithHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                    .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-Type, Authorization");
+            });
             pipelines.AfterRequest += (ctx) =>
             {
                 Console.WriteLine($@"{ctx.Request.Path} - {ctx.Response.StatusCode}");

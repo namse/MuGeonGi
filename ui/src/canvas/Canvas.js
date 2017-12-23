@@ -1,7 +1,7 @@
 import Cable from './Cable';
+import destroyInstrument from '../server/destroyInstrument';
 
 const canvas = document.getElementById('canvas');
-
 const ctx = canvas.getContext('2d');
 
 const canvasState = {
@@ -12,16 +12,21 @@ const canvasState = {
 let state = canvasState.IDLE;
 
 let connectingCable;
+let sprites = [];
+let cables = [];
+
 
 function onMouseUp() {
   if (state === canvasState.CABLING) {
     state = canvasState.IDLE;
-    connectingCable = undefined;
+    destroyInstrument(connectingCable.uuid)
+      .then(() => {
+        cables = cables.filter(cable => cable !== connectingCable);
+        sprites = sprites.filter(sprite => sprite !== connectingCable);
+        connectingCable = undefined;
+      });
   }
 }
-
-const sprites = [];
-const cables = [];
 
 function draw() {
   canvas.width = window.innerWidth;

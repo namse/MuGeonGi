@@ -34,6 +34,7 @@ export default class Jack extends Component {
     Canvas.onJackClicked(this);
   }
   onMouseUp = () => {
+    console.log('i am jack on mouse up function');
     Canvas.onMouseUpOnJack(this);
   }
   render() {
