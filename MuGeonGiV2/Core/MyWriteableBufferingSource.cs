@@ -94,7 +94,10 @@ namespace MuGeonGiV2.Core
                 if (FillWithZeros)
                 {
                     if (read < count)
+                    {
+                        Console.WriteLine("Fate / Zero(FILL WITH ZERO)");
                         Array.Clear(buffer, offset + read, count - read);
+                    }   
                     return count;
                 }
                 return read;

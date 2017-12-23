@@ -60,7 +60,7 @@ namespace MuGeonGiV2.Core
                 throw new ArgumentNullException("soundIn");
             ThrowIfSoundInNotInitialized(soundIn);
 
-            _buffer = new MyWriteableBufferingSource(soundIn.WaveFormat, bufferSize) { FillWithZeros = false };
+            _buffer = new MyWriteableBufferingSource(soundIn.WaveFormat, bufferSize) { FillWithZeros = true };
             _soundIn = soundIn;
             _soundIn.DataAvailable += OnDataAvailable;
         }
