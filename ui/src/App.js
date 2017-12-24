@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Canvas from './canvas/Canvas';
 import Menu from './Menu';
-import { addEventListener } from './utils/instrumentList';
+import { onInstrumentAdded } from './utils/instrumentList';
+import restore from './utils/restore';
 
 const Container = styled.div`
   overflow: hidden;
@@ -22,11 +23,14 @@ class App extends Component {
     this.state = {
       instruments: [],
     };
-    addEventListener((instruments) => {
+    onInstrumentAdded((instruments) => {
+      console.log(instruments);
       this.setState({
         instruments,
       });
     });
+    restore()
+      .catch(err => console.log(err));
   }
   render() {
     return (

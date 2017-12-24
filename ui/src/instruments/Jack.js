@@ -1,9 +1,32 @@
 import React, { Component } from 'react';
 import Canvas from '../canvas/Canvas';
 
+const jackMap = {}; // uuid, jack
+const jackFindingJobs = {}; // uuid, handler
+
+export function findJack(uuid) {
+  return new Promise((resolve, reject) => {
+    const foundJack = jackMap[uuid];
+    if (foundJack) {
+      resolve(foundJack);
+    } else {
+      jackFindingJobs[uuid] = jack => resolve(jack);
+    }
+  });
+}
+
 export default class Jack extends Component {
-  constructor(props) {
-    super(props);
+  componentWillMount() {
+    const { uuid } = this.props;
+    jackMap[uuid] = this;
+    const handler = jackFindingJobs[uuid];
+    if (handler) {
+      handler(this);
+    }
+  }
+  componentWillUnmount() {
+    const { uuid } = this.props;
+    jackMap[uuid] = undefined;
   }
   onMouseDown() {
     Canvas.onJackClicked(this);
@@ -22,14 +45,6 @@ export default class Jack extends Component {
     const x = (left + right) / 2;
     const y = (top + bottom) / 2;
     return { x, y };
-  }
-  connectCable(cableUuid) {
-    const {
-      uuid,
-    } = this.props;
-    fetch(`http://localhost:8080/jack/${uuid}/connectCable/${cableUuid}`, {
-      method: 'POST',
-    });
   }
   render() {
     return (

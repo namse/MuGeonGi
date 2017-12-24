@@ -3,15 +3,15 @@ const eventHandlers = [];
 
 export default list;
 
-export function addInstrument(instrument) {
-  list.push(instrument);
+export function addCable(cable) {
+  list.push(cable);
   eventHandlers.forEach(handler => handler(list));
 }
 
-export function removeInstrument(instrument) {
+export function removeCable(cable) {
   // TODO
 }
 
-export function onInstrumentAdded(eventHandler) {
+export function onCableAdded(eventHandler) {
   eventHandlers.push(eventHandler);
 }

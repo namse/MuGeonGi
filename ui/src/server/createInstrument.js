@@ -11,4 +11,5 @@ export default instrument =>
       const instrumentClass = instrumentClassMap[instrument];
       const newInstrumentComponent = React.createElement(instrumentClass, props, null);
       addInstrument(newInstrumentComponent);
+      return newInstrumentComponent;
     });

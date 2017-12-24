@@ -1,20 +1,19 @@
 import Sprite from './Sprite';
 import getMousePosition from '../utils/getMousePosition';
-import createInstrument from '../server/createInstrument';
+import connectCable from '../server/connectCable';
 
 export default class Cable extends Sprite {
-  constructor(startJack) {
+  constructor({ uuid }) {
     super();
-    createInstrument('Cable')
-      .then(({ uuid }) => {
-        this.uuid = uuid;
-        this.startJack.connectCable(uuid);
-      });
+    this.uuid = uuid;
+  }
+  setStartJack(startJack) {
     this.startJack = startJack;
+    return connectCable(startJack.props.uuid, this.uuid);
   }
   setEndJack(endJack) {
     this.endJack = endJack;
-    this.endJack.connectCable(this.uuid);
+    return connectCable(endJack.props.uuid, this.uuid);
   }
   render(ctx) {
     const {
@@ -24,7 +23,7 @@ export default class Cable extends Sprite {
     const {
       x: endX,
       y: endY,
-    } = (this.endJack) ? this.endJack.getPosition() : getMousePosition();
+    } = this.endJack ? this.endJack.getPosition() : getMousePosition();
     ctx.moveTo(startX, startY);
     ctx.lineTo(endX, endY);
     ctx.stroke();

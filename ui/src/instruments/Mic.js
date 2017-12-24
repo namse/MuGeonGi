@@ -49,7 +49,10 @@ export default class Mic extends Component {
     } = this.state;
     const options = devices.map(device => <option value={device}>{device}</option>);
     return (
-      <SingleBox {...this.props}>
+      <SingleBox
+        {...this.props}
+        ref={(ref) => { console.log(ref); }}
+      >
         Mic
         Device:
         <select
