@@ -51,7 +51,6 @@ export default class Mic extends Component {
     return (
       <SingleBox
         {...this.props}
-        ref={(ref) => { console.log(ref); }}
       >
         Mic
         Device:

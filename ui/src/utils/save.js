@@ -1,15 +1,23 @@
 import instrumentList, { onInstrumentAdded } from './instrumentList';
 import cableList, { onCableAdded } from './cableList';
+import { findSingleBox } from '../instruments/SingleBox';
 
 const fs = window.require('fs');
 
 export default function save() {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const instrumentData = instrumentList.map(instrument => ({
       name: instrument.type.name,
       props: instrument.props,
     }));
-    console.log(cableList);
+
+    await Promise.all(instrumentList.map(async (instrument, index) => {
+      const singleBox = await findSingleBox(instrument.props.uuid);
+      const { x, y } = singleBox.draggable.state;
+      instrumentData[index].x = x;
+      instrumentData[index].y = y;
+    }));
+
     const cableData = cableList.map((cable) => {
       const startJack = cable.startJack
         ? { uuid: cable.startJack.props.uuid }
@@ -23,7 +31,6 @@ export default function save() {
         endJack,
       };
     });
-    console.log(cableData);
     const string = JSON.stringify({
       instruments: instrumentData,
       cables: cableData,
