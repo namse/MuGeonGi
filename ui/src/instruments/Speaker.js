@@ -28,9 +28,6 @@ export default class Speaker extends Component {
       return;
     }
     const { uuid } = this.props;
-    this.setState({
-      device,
-    });
     fetch(`http://localhost:8080/speaker/${uuid}/device/${device}`, {
       method: 'post',
     })
@@ -55,7 +52,7 @@ export default class Speaker extends Component {
         Device:
         <select
           style={{ width: '100%' }}
-          onChange={(event) => this.setDevice(event.target.value)}
+          onChange={event => this.setDevice(event.target.value)}
           value={selectedDevice}
         >
           {options}

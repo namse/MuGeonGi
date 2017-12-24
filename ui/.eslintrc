@@ -1,5 +1,13 @@
 {
-  "extends": "airbnb",
+  "extends": [
+    "airbnb",
+    "react-app"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "globals": {
     "fetch": true,
     "document": true,
@@ -11,6 +19,7 @@
     "react/prefer-stateless-function": 0,
     "react/prop-types": 0,
     "jsx-a11y/no-static-element-interactions": 0,
-    "class-methods-use-this": 0
+    "class-methods-use-this": 0,
+    "no-underscore-dangle": 0
   }
 }

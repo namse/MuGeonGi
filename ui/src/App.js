@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Canvas from './canvas/Canvas';
 import Menu from './Menu';
+import { addEventListener } from './utils/instrumentList';
 
 const Container = styled.div`
   overflow: hidden;
@@ -21,16 +22,16 @@ class App extends Component {
     this.state = {
       instruments: [],
     };
-  }
-  onNewInstrument(instrument) {
-    this.setState({
-      instruments: this.state.instruments.concat(instrument),
+    addEventListener((instruments) => {
+      this.setState({
+        instruments,
+      });
     });
   }
   render() {
     return (
       <Container>
-        <Menu onNewInstrument={inst => this.onNewInstrument(inst)} />
+        <Menu />
         <PlayGround
           className="App"
           onMouseUp={() => Canvas.onMouseUp()}

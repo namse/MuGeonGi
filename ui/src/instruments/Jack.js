@@ -4,9 +4,13 @@ import Canvas from '../canvas/Canvas';
 export default class Jack extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isDrawingCable: false,
-    };
+  }
+  onMouseDown() {
+    Canvas.onJackClicked(this);
+  }
+  onMouseUp() {
+    console.log('i am jack on mouse up function');
+    Canvas.onMouseUpOnJack(this);
   }
   getPosition() {
     const {
@@ -25,17 +29,7 @@ export default class Jack extends Component {
     } = this.props;
     fetch(`http://localhost:8080/jack/${uuid}/connectCable/${cableUuid}`, {
       method: 'POST',
-    })
-      .then(res => {
-        console.log(res);
-      })
-  }
-  onMouseDown = () => {
-    Canvas.onJackClicked(this);
-  }
-  onMouseUp = () => {
-    console.log('i am jack on mouse up function');
-    Canvas.onMouseUpOnJack(this);
+    });
   }
   render() {
     return (
@@ -46,7 +40,7 @@ export default class Jack extends Component {
           width: '20px',
           height: '20px',
           position: 'relative',
-          top: '40px'
+          top: '40px',
         }}
         onMouseDown={() => this.onMouseDown()}
         onMouseUp={() => this.onMouseUp()}

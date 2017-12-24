@@ -84,7 +84,11 @@ export default class AudioPlayer extends Instrument {
       <SingleBox {...this.props}>
         AudioPlayer
 
-        File:<FileInputButton onClick={() => { this.fileInput.click(); }}>{filename}</FileInputButton>
+        File:
+        <FileInputButton
+          onClick={() => { this.fileInput.click(); }}
+        >{filename}
+        </FileInputButton>
         <input
           style={{ display: 'none' }}
           ref={(fileInput) => { this.fileInput = fileInput; }}
