@@ -20,6 +20,11 @@ namespace MuGeonGiV2.Core
         public Speaker()
         {
             InputJack = new InputJack(this);
+            
+            _soundOut.Stopped += (s, e) =>
+            {
+                Console.WriteLine("I'm dead but not dead, P.P.A.P");
+            };
         }
 
         internal void SetDevice(string deviceTag)
@@ -54,14 +59,6 @@ namespace MuGeonGiV2.Core
         public override void TurnOn()
         {
             _soundOut.Play();
-            _soundOut.Stopped += (s, e) =>
-            {
-                Console.WriteLine("I'm dead but not dead, P.P.A.P");
-                Task.Run(() =>
-                {
-                    _soundOut.Play();
-                });
-            };
         }
     }
 }

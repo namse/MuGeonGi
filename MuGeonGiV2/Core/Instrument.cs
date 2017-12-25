@@ -30,5 +30,34 @@ namespace MuGeonGiV2.Core
         {
             throw new NotImplementedException();
         }
+
+        public void SetCircuitUp()
+        {
+            var next = Next;
+            var source = OutputSource;
+            while (next.IsEndPoint == false)
+            {
+                if (next is Effector)
+                {
+                    var effector = next as Effector;
+                    source = effector.AppendSource(source);
+                }
+                next = next.Next;
+            }
+            var soundOutInstrument = next as Instrument;
+            soundOutInstrument.Initialize(source);
+            soundOutInstrument.TurnOn();
+            TurnOn();
+        }
+
+        protected Instrument GetSoundOutEndPoint()
+        {
+            var next = Next;
+            while (next.IsEndPoint == false)
+            {
+                next = next.Next;
+            }
+            return next as Instrument;
+        }
     }
 }

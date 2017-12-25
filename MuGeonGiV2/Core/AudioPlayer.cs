@@ -40,12 +40,20 @@ namespace MuGeonGiV2.Core
             {
                 _audioSource = _audioSource.ToMono();
             }
-            _audioSource.Position = _audioSource.Length;
+
+            SetCircuitUp();
         }
 
         public override void TurnOn()
         {
+            _audioSource.Position = _audioSource.Length;
+        }
+
+        public void Play()
+        {
+            var soundOutInstrument = GetSoundOutEndPoint();
             _audioSource.Position = 0;
+            soundOutInstrument.TurnOn();
         }
 
         public void BindKey(bool shiftKey, bool ctrlKey, bool altKey, Keys key)
@@ -68,7 +76,7 @@ namespace MuGeonGiV2.Core
             {
                 return;
             }
-            TurnOn();
+            Play();
         }
     }
 }

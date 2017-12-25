@@ -42,26 +42,8 @@ namespace MuGeonGiV2.Core
                 return;
             }
 
-            // TODO : BEGIN Intialize, Start, Play
-            var soundOutInstrument = (Instrument) nextEndpoint;
-            var soundInInstrument = (Instrument) previousEndpoint;
-
-            var source = soundInInstrument.OutputSource;
-            var next = soundInInstrument.Next;
-
-            while (next != soundOutInstrument)
-            {
-                if (next is Effector)
-                {
-                    var effector = next as Effector;
-                    source = effector.AppendSource(source);
-                }
-                next = next.Next;
-            }
-
-            soundOutInstrument.Initialize(source);
-            soundOutInstrument.TurnOn();
-            soundInInstrument.TurnOn();
+            var soundInInstrument = previousEndpoint as Instrument;
+            soundInInstrument.SetCircuitUp();
         }
     }
 }
