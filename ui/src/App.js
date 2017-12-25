@@ -4,13 +4,14 @@ import Canvas from './canvas/Canvas';
 import Menu from './Menu';
 import { onInstrumentAdded } from './utils/instrumentList';
 import restore from './utils/restore';
+import Setting from './Setting';
 
 const Container = styled.div`
   overflow: hidden;
 `;
 const PlayGround = styled.div`
   width: calc(100vw - 100px);
-  height: 100vh;
+  height: 70%;
   border: 1px solid red;
   left: 100px;
   position: fixed; /* Stay in place */  
@@ -42,6 +43,7 @@ class App extends Component {
         >
           {this.state.instruments}
         </PlayGround >
+        <Setting />
       </Container>
     );
   }

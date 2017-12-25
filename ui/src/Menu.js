@@ -4,13 +4,14 @@ import createInstrument from './server/createInstrument';
 import instrumentClassMap from './utils/instrumentClassMap';
 
 const Conatiner = styled.div`
-  height: 100%;
+  height: 70%;
   width: 100px;
   position: fixed;
   z-index: 1;
   top: 0;
   left: 0;
   overflow-x: hidden;
+  border: 1px solid blue;
 `;
 
 export default class Menu extends Component {

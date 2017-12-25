@@ -15,22 +15,29 @@ namespace MuGeonGiV2.Server
         {
             Get["/devices"] = parameters =>
             {
-                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.Uuid, out Speaker speaker))
                 {
                     return new NotFoundResponse();
                 }
-                var speaker = (Speaker)instrument;
                 var devices = speaker.AvailableDevices.Select(device => device.ToString());
                 return Response.AsJson(devices);
             };
             Post["/device/{DeviceName}"] = parameters => 
             {
-                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.Uuid, out Speaker speaker))
                 {
                     return new NotFoundResponse();
                 }
-                var speaker = (Speaker)instrument;
                 speaker.SetDevice((string)parameters.DeviceName);
+                return new Response();
+            };
+            Post["/volume/{volume}"] = parameters =>
+            {
+                if (!Storable.TryGet(parameters.Uuid, out Speaker speaker))
+                {
+                    return new NotFoundResponse();
+                }
+                speaker.SetVolume((float)parameters.volume);
                 return new Response();
             };
         }

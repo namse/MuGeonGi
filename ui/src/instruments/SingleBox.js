@@ -18,6 +18,11 @@ export function findSingleBox(uuid) {
   });
 }
 
+const singleBoxClickedHandlers = [];
+export function onSingleBoxClicked(handler) {
+  singleBoxClickedHandlers.push(handler);
+}
+
 const Container = styled.div`
   width: auto;
   height: auto;
@@ -94,7 +99,9 @@ export default class SingleBox extends Component {
         onDrag={this.onDrag}
         onStop={this.onStop}
       >
-        <Container>
+        <Container
+          onClick={() => singleBoxClickedHandlers.forEach(handler => handler(this))}
+        >
           {this.renderJack(inputJack)}
           <Content className="content">
             a

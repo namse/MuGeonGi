@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import SingleBox from './SingleBox';
-import Jack from './Jack';
+import SettingPortal from './SettingPortal';
 
 export default class Speaker extends Component {
   constructor(props) {
     super(props);
     this.state = {
       devices: [],
+      selectedDevice: false,
+      volume: 1,
     };
     const {
       uuid,
@@ -23,7 +25,9 @@ export default class Speaker extends Component {
       .then(res => console.log(`delete speaker : ${res.status}`));
   }
   setDevice = (device) => {
-    console.log(device);
+    this.setState({
+      selectedDevice: device,
+    });
     if (device.length <= 0) {
       return;
     }
@@ -33,6 +37,16 @@ export default class Speaker extends Component {
     })
       .then(res => console.log(`set device of speaker : ${res.status}`));
   }
+  setVolume = (volume) => {
+    this.setState({
+      volume,
+    });
+    const { uuid } = this.props;
+    fetch(`http://localhost:8080/speaker/${uuid}/volume/${volume}`, {
+      method: 'post',
+    })
+      .then(res => console.log(`set volume of speaker : ${res.status}`));
+  }
   turnOn = () => {
     const { uuid } = this.props;
     fetch(`http://localhost:8080/speaker/${uuid}/TurnOn`, {
@@ -40,10 +54,43 @@ export default class Speaker extends Component {
     })
       .then(res => console.log(`turn on speaker : ${res.status}`));
   }
+  renderSetting() {
+    const {
+      devices,
+      selectedDevice,
+      volume,
+    } = this.state;
+    const options = devices.map(device => <option value={device}>{device}</option>);
+    return (
+      <SettingPortal
+        {...this.props}
+      >
+        {'<Speaker>'}
+        Device:
+        <select
+          style={{ width: '100%' }}
+          onChange={event => this.setDevice(event.target.value)}
+          value={selectedDevice}
+        >
+          {options}
+        </select>
+        volume:
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={volume}
+          onChange={event => this.setVolume(event.target.value)}
+        />
+      </SettingPortal>
+    );
+  }
   render() {
     const {
       devices,
       selectedDevice,
+      volume,
     } = this.state;
     const options = devices.map(device => <option value={device}>{device}</option>);
     return (
@@ -58,6 +105,7 @@ export default class Speaker extends Component {
           {options}
         </select>
         <button onClick={() => this.turnOn()}>Turn On</button>
+        {this.renderSetting()}
       </SingleBox>
     );
   }

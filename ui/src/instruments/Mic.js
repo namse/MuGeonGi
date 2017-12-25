@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import SingleBox from './SingleBox';
-import Jack from './Jack';
+import SettingPortal from './SettingPortal';
 
 export default class Mic extends Component {
   constructor(props) {
     super(props);
     this.state = {
       devices: [],
+      selectedDevice: undefined,
     };
     const {
       uuid,
@@ -25,7 +26,9 @@ export default class Mic extends Component {
       .then(res => console.log(`delete mic : ${res.status}`));
   }
   setDevice = (device) => {
-    console.log(device);
+    this.setState({
+      selectedDevice: device,
+    });
     if (device.length <= 0) {
       return;
     }
@@ -62,6 +65,19 @@ export default class Mic extends Component {
           {options}
         </select>
         <button onClick={() => this.turnOn()}>Turn On</button>
+        <SettingPortal
+          {...this.props}
+        >
+          {'<Mic>'}
+          Device:
+          <select
+            style={{ width: '100%' }}
+            onChange={event => this.setDevice(event.target.value)}
+            value={selectedDevice}
+          >
+            {options}
+          </select>
+        </SettingPortal>
       </SingleBox>
     );
   }

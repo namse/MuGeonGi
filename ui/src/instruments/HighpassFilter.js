@@ -7,7 +7,9 @@ export default class HighpassFilter extends Instrument {
   render() {
     console.log(this.props);
     return (
-      <SingleBox {...this.props} />
+      <SingleBox {...this.props} >
+        Highpass Filter
+      </SingleBox>
     );
   }
 }

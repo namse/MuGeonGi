@@ -29,6 +29,11 @@ namespace MuGeonGiV2.Core
             _soundOut.Device = device;
         }
 
+        public void SetVolume(float volume)
+        {
+            _soundOut.Volume = volume;
+        }
+
         public List<MMDevice> AvailableDevices
         {
             get
