@@ -46,18 +46,12 @@ namespace MuGeonGiV2.Core
             }
         }
 
-
-        public void Initialize(IWaveSource source)
+        public override void Initialize(IWaveSource source)
         {
             _soundOut.Initialize(source);
         }
-        public void TurnOn()
-        {
-            // TODO 나중에 이거 지우셈. Play로 통일!
-            Play();
-        }
 
-        public void Play()
+        public override void TurnOn()
         {
             _soundOut.Play();
             _soundOut.Stopped += (s, e) =>

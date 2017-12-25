@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSCore;
 
 namespace MuGeonGiV2.Core
 {
@@ -18,5 +19,16 @@ namespace MuGeonGiV2.Core
         public virtual ICircuitNode Next => OutputJack;
         public virtual ICircuitNode Previous => InputJack;
         public abstract bool IsEndPoint { get; }
+        public virtual IWaveSource OutputSource => throw new NotImplementedException();
+
+        public virtual void TurnOn()
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Initialize(IWaveSource outputSource)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -43,12 +43,12 @@ namespace MuGeonGiV2.Core
             }
 
             // TODO : BEGIN Intialize, Start, Play
-            var speaker = (Speaker) nextEndpoint;
-            var mic = (Mic) previousEndpoint;
+            var soundOutInstrument = (Instrument) nextEndpoint;
+            var soundInInstrument = (Instrument) previousEndpoint;
 
-            speaker.Initialize(mic.SoundInSource);
-            mic.SoundIn.Start();
-            speaker.Play();
+            soundOutInstrument.Initialize(soundInInstrument.OutputSource);
+            soundOutInstrument.TurnOn();
+            soundInInstrument.TurnOn();
         }
     }
 }

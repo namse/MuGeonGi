@@ -16,6 +16,7 @@ namespace MuGeonGiV2.Core
         public readonly WasapiCapture SoundIn = new WasapiCapture();
         public readonly RealTimeSoundInSource SoundInSource;
         public override bool IsEndPoint => true;
+        public override IWaveSource OutputSource => SoundInSource;
 
         public Mic()
         {
@@ -42,13 +43,9 @@ namespace MuGeonGiV2.Core
             }
         }
 
-        public void TurnOn()
+        public override void TurnOn()
         {
             SoundIn.Start();
-            SoundIn.DataAvailable += (s, e) =>
-            {
-                Console.WriteLine((SoundInSource.Length / SoundInSource.WaveFormat.BytesPerSecond));
-            };
         }
     }
 }

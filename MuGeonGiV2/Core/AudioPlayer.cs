@@ -22,23 +22,18 @@ namespace MuGeonGiV2.Core
     }
     public class AudioPlayer: Instrument
     {
-        private readonly EditableStream _stream;
         private IWaveSource _audioSource;
         private KeyBindingInfo _keyBindingInfo;
         public override bool IsEndPoint => true;
         public AudioPlayer()
         {
-            _stream = new EditableStream(Read);
             OutputJack = new OutputJack(this);
             KeyboardHook.Hook.KeyDownEvent += KeyDown;
         }
 
         public void SetFile(string filePath)
         {
-            _audioSource = CodecFactory.Instance.GetCodec(filePath)
-                .ChangeSampleRate(44100)
-                .ToSampleSource()
-                .ToWaveSource(16);
+            _audioSource = CodecFactory.Instance.GetCodec(filePath);
             if (_audioSource.WaveFormat.Channels == 2)
             {
                 _audioSource = _audioSource.ToMono();
@@ -49,32 +44,6 @@ namespace MuGeonGiV2.Core
         public void Play()
         {
             _audioSource.Position = 0;
-        }
-
-        public int Read(byte[] buffer, int offset, int count)
-        {
-            if (_audioSource != null)
-            {
-                var read = _audioSource.Read(buffer, offset, count);
-                var availableLength = (_audioSource.Length - _audioSource.Position);
-                // Console.WriteLine($"{count}-{read}-{availableLength}");
-                if (availableLength <= 0)
-                {
-                    _audioSource.Position = _audioSource.Length;
-                    Array.Clear(buffer, offset + read + (int)availableLength, count - read);
-                    return count;
-                }
-                if (read != 0)
-                {
-                    return read;
-                }
-                if (availableLength > count)
-                {
-                    return 0;
-                }
-            }
-            Array.Clear(buffer, offset, count);
-            return count;
         }
 
         public void BindKey(bool shiftKey, bool ctrlKey, bool altKey, Keys key)
