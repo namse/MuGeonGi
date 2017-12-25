@@ -25,6 +25,8 @@ namespace MuGeonGiV2.Core
         private IWaveSource _audioSource;
         private KeyBindingInfo _keyBindingInfo;
         public override bool IsEndPoint => true;
+        public override IWaveSource OutputSource => _audioSource;
+
         public AudioPlayer()
         {
             OutputJack = new OutputJack(this);
@@ -41,7 +43,7 @@ namespace MuGeonGiV2.Core
             _audioSource.Position = _audioSource.Length;
         }
 
-        public void Play()
+        public override void TurnOn()
         {
             _audioSource.Position = 0;
         }
@@ -66,7 +68,7 @@ namespace MuGeonGiV2.Core
             {
                 return;
             }
-            Play();
+            TurnOn();
         }
     }
 }

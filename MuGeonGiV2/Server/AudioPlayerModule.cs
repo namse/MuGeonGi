@@ -41,7 +41,7 @@ namespace MuGeonGiV2.Server
                 {
                     return new NotFoundResponse();
                 }
-                audioPlayer.Play(); 
+                audioPlayer.TurnOn(); 
                 return new Response();
             };
             Post["/bindkey"] = parameters =>
