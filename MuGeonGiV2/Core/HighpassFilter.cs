@@ -11,15 +11,36 @@ namespace MuGeonGiV2.Core
 {
     public class HighpassFilter: Effector
     {
+        private double _frequency = 1000;
+        private int _sampleRate;
+        private BiQuadFilterSource _biQuadFilterSource;
+
+        public void SetFrequency(double frequency)
+        {
+            _frequency = frequency;
+            if (_biQuadFilterSource != null)
+            {
+                InitializeFilter();
+            }
+        }
+
         public override IWaveSource AppendSource(IWaveSource source)
         {
             var newSource = source
                 .ToSampleSource()
-                .AppendSource(x => new BiQuadFilterSource(x), out var biQuadFilterSource)
+                .AppendSource(x => new BiQuadFilterSource(x), out _biQuadFilterSource)
                 .ToWaveSource();
-            biQuadFilterSource.Filter = new CSCore.DSP.HighpassFilter(newSource.WaveFormat.SampleRate, 1000);
+
+            _sampleRate = newSource.WaveFormat.SampleRate;
+
+            InitializeFilter();
 
             return newSource;
+        }
+
+        private void InitializeFilter()
+        {
+            _biQuadFilterSource.Filter = new CSCore.DSP.HighpassFilter(_sampleRate, _frequency);
         }
     }
     public class BiQuadFilterSource : SampleAggregatorBase

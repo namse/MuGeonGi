@@ -39,6 +39,26 @@ namespace MuGeonGiV2.Server
                 method.Invoke(caller, null);
                 return new Response();
             };
+            Post["/{MethodName}/{Parameter}"] = parameters =>
+            {
+                if (!Storable.TryGet(parameters.Uuid, out Storable storable))
+                {
+                    return new NotFoundResponse();
+                }
+                // TODO : Check type
+
+                var type = storable.GetType();
+                MethodInfo method = type.GetMethod(parameters.MethodName);
+
+                var param = Convert.ChangeType(parameters.Parameter, method.GetParameters()[0].ParameterType);
+                
+                var parameterArray = new[]
+                {
+                    param,
+                };
+                method.Invoke(storable, parameterArray);
+                return new Response();
+            };
         }
     }
 }
