@@ -157,9 +157,9 @@ namespace MuGeonGiV2
         static void Filter()
         {
             var mic = new Mic();
-            var lowpassFilter = new LowpassFilter(1000);
+            var lowpassFilter = new LowpassFilter();
             var equalizer = new Equalizer();
-            var highpassFilter = new HighpassFilter(1000);
+            var highpassFilter = new HighpassFilter();
             var speaker = new Speaker();
 
             var cable1 = new Cable();

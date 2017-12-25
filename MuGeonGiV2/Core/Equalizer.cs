@@ -24,25 +24,20 @@ namespace MuGeonGiV2.Core
         }
 
         public IWaveSource WaveSource;
-        private CSCore.Streams.Effects.Equalizer _myEqualizer;
-        public Equalizer()
-        {
-            // TODO
-            //WaveSource = InputJack.FakeStream
-            //    .ToSampleSource()
-            //    .AppendSource(CSCore.Streams.Effects.Equalizer.Create10BandEqualizer, out _myEqualizer)
-            //    .ToWaveSource(16);
-        }
+        private CSCore.Streams.Effects.Equalizer _equalizer;
 
         public void SetFilter(Frequencies frequency, double gain)
         {
-            int index = (int)frequency;
-            _myEqualizer.SampleFilters[index].AverageGainDB = gain;
+            var index = (int)frequency;
+            _equalizer.SampleFilters[index].AverageGainDB = gain;
         }
 
-        public override int Read(byte[] buffer, int offset, int count)
+        public override IWaveSource AppendSource(IWaveSource source)
         {
-            return WaveSource.Read(buffer, offset, count);
+            return source
+                .ToSampleSource()
+                .AppendSource(CSCore.Streams.Effects.Equalizer.Create10BandEqualizer, out _equalizer)
+                .ToWaveSource();
         }
     }
 }
