@@ -2,16 +2,15 @@ import createInstrument from '../server/createInstrument';
 import createCable from '../server/createCable';
 import { findJack } from '../instruments/Jack';
 import { findSingleBox } from '../instruments/SingleBox';
-import { instrumentList } from '../instruments/Instrument';
 
 const fs = window.require('fs');
 
 async function restoreInstruments(instruments) {
+  const newInstrumentMap = {};
   await Promise.all(instruments.map(async (instrument) => {
     const newInstrument = await createInstrument(instrument.name);
 
     const singleBox = await findSingleBox(newInstrument.props.uuid);
-
     const { x, y } = instrument;
     singleBox.setDefaultPosition(x, y);
 
@@ -23,13 +22,15 @@ async function restoreInstruments(instruments) {
       const param = instrument.state[key];
       await newInstrument[method](param);
     }));
+    newInstrumentMap[instrument.props.uuid] = newInstrument;
   }));
+  return newInstrumentMap;
 }
 
 async function restoreCables({
   cables,
   oldInstruments,
-  newInstruments,
+  newInstrumentMap, // old UUID, new Instrument Instance
 }) {
   await Promise.all(cables.map(async (cable) => {
     if (!cable.startJack || !cable.endJack) {
@@ -39,10 +40,9 @@ async function restoreCables({
     let newEndJack;
     await Promise.all(oldInstruments.map(async (instrument) => {
       const jackNames = ['inputJack', 'outputJack'];
-
       await Promise.all(jackNames.map(async (jackName) => {
         if (instrument.props[jackName]) {
-          const newInstrument = newInstruments[instrument.props.uuid];
+          const newInstrument = newInstrumentMap[instrument.props.uuid];
           const jackUuid = instrument.props[jackName].uuid;
           const newJack = await findJack(newInstrument.props[jackName].uuid);
 
@@ -72,13 +72,12 @@ export default function restore() {
           cables,
         } = JSON.parse(data);
 
-        await restoreInstruments(instruments);
-        const newInstruments = instrumentList;
+        const newInstrumentMap = await restoreInstruments(instruments);
 
         restoreCables({
           cables,
           oldInstruments: instruments,
-          newInstruments,
+          newInstrumentMap,
         });
         return resolve();
       } catch (err2) {
