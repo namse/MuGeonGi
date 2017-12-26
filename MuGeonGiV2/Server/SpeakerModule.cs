@@ -31,15 +31,6 @@ namespace MuGeonGiV2.Server
                 speaker.SetDevice((string)parameters.DeviceName);
                 return new Response();
             };
-            Post["/volume/{volume}"] = parameters =>
-            {
-                if (!Storable.TryGet(parameters.Uuid, out Speaker speaker))
-                {
-                    return new NotFoundResponse();
-                }
-                speaker.SetVolume((float)parameters.volume);
-                return new Response();
-            };
         }
     }
 }

@@ -24,16 +24,6 @@ namespace MuGeonGiV2.Server
                 var devices = mic.AvailableDevices.Select(device => device.ToString());
                 return Response.AsJson(devices);
             };
-            Post["/device/{DeviceName}"] = parameters => 
-            {
-                if (!Instrument.TryGet(parameters.Uuid, out Instrument instrument))
-                {
-                    return new NotFoundResponse();
-                }
-                var mic = (Mic)instrument;
-                mic.SetDevice((string)parameters.DeviceName);
-                return new Response();
-            };
         }
     }
 }

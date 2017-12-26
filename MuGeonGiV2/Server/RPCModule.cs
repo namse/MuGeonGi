@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MuGeonGiV2.Core;
 using Nancy;
+using static System.Char;
 
 namespace MuGeonGiV2.Server
 {
@@ -39,7 +40,7 @@ namespace MuGeonGiV2.Server
                 method.Invoke(caller, null);
                 return new Response();
             };
-            Post["/{MethodName}/{Parameter}"] = parameters =>
+            Post["/{Property}/{Value}"] = parameters =>
             {
                 if (!Storable.TryGet(parameters.Uuid, out Storable storable))
                 {
@@ -48,9 +49,11 @@ namespace MuGeonGiV2.Server
                 // TODO : Check type
 
                 var type = storable.GetType();
-                MethodInfo method = type.GetMethod(parameters.MethodName);
+                string property = parameters.Property;
+                var methodName = $"Set{ToUpper(property[0])}{property.Substring(1)}";
 
-                var param = Convert.ChangeType(parameters.Parameter, method.GetParameters()[0].ParameterType);
+                var method = type.GetMethod(methodName);
+                var param = Convert.ChangeType(parameters.Value, method.GetParameters()[0].ParameterType);
                 
                 var parameterArray = new[]
                 {
