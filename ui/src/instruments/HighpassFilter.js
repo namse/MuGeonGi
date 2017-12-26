@@ -4,21 +4,14 @@ import SingleBox from './SingleBox';
 import SettingPortal from './SettingPortal';
 
 export default class HighpassFilter extends Instrument {
+  static StatesWillSave = [
+    'frequency',
+  ];
   constructor(props) {
     super(props);
     this.state = {
       frequency: 1000,
     };
-  }
-  setFrequency(frequency) {
-    this.setState({
-      frequency,
-    });
-    const { uuid } = this.props;
-    fetch(`http://localhost:8080/highpassfilter/${uuid}/SetFrequency/${frequency}`, {
-      method: 'post',
-    })
-      .then(res => console.log(`set frequency of highpassfilter : ${res.status}`));
   }
   render() {
     console.log(this.props);

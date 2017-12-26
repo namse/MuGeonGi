@@ -4,6 +4,10 @@ import Instrument from './Instrument';
 import SettingPortal from './SettingPortal';
 
 export default class Speaker extends Instrument {
+  static StatesWillSave = [
+    'device',
+    'volume',
+  ];
   constructor(props) {
     super(props);
     this.state = {
@@ -24,29 +28,6 @@ export default class Speaker extends Instrument {
       method: 'delete',
     })
       .then(res => console.log(`delete speaker : ${res.status}`));
-  }
-  setDevice = (device) => {
-    this.setState({
-      selectedDevice: device,
-    });
-    if (device.length <= 0) {
-      return;
-    }
-    const { uuid } = this.props;
-    fetch(`http://localhost:8080/speaker/${uuid}/device/${device}`, {
-      method: 'post',
-    })
-      .then(res => console.log(`set device of speaker : ${res.status}`));
-  }
-  setVolume = (volume) => {
-    this.setState({
-      volume,
-    });
-    const { uuid } = this.props;
-    fetch(`http://localhost:8080/speaker/${uuid}/volume/${volume}`, {
-      method: 'post',
-    })
-      .then(res => console.log(`set volume of speaker : ${res.status}`));
   }
   turnOn = () => {
     const { uuid } = this.props;

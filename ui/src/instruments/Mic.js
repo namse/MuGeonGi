@@ -29,19 +29,6 @@ export default class Mic extends Instrument {
     })
       .then(res => console.log(`delete mic : ${res.status}`));
   }
-  setDevice = (device) => {
-    this.setState({
-      device,
-    });
-    if (device.length <= 0) {
-      return;
-    }
-    const { uuid } = this.props;
-    fetch(`http://localhost:8080/mic/${uuid}/device/${device}`, {
-      method: 'post',
-    })
-      .then(res => console.log(`set device of mic : ${res.status}`));
-  }
   turnOn = () => {
     const { uuid } = this.props;
     fetch(`http://localhost:8080/mic/${uuid}/TurnOn`, {

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import save from '../utils/save';
 
 export const instrumentList = [];
 export const stateMap = {}; // uuid, state
@@ -35,6 +36,7 @@ export default class Instrument extends Component {
       handler(this);
     }
     onInstrumentAddedEventHandlers.forEach(addedEventHandler => addedEventHandler(this));
+    this.initializeFunctions();
   }
   componentDidUpdate() {
     this.saveState();
@@ -59,5 +61,28 @@ export default class Instrument extends Component {
       state[stateName] = this.state[stateName];
     });
     stateMap[this.props.uuid] = state;
+  }
+  initializeFunctions() {
+    console.log(this.constructor.StatesWillSave);
+    if (!this.constructor.StatesWillSave) {
+      return;
+    }
+    this.constructor.StatesWillSave.forEach((stateName) => {
+      const methodName = `set${stateName.slice(0, 1).toUpperCase()}${stateName.slice(1)}`;
+      this[methodName] = (state) => {
+        this.setState({
+          [stateName]: state,
+        });
+        const { uuid } = this.props;
+        // TODO:
+        return fetch(`http://localhost:8080/${this.constructor.name}/${uuid}/${stateName}/${state}`, {
+          method: 'post',
+        })
+          .then((res) => {
+            console.log(`${this.constructor.name}/${uuid}/${stateName}/${state} : ${res.status}`);
+            return save();
+          });
+      };
+    });
   }
 }
