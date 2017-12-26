@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Instrument from './Instrument';
 import SingleBox from './SingleBox';
+import hookKeboard, { convertToAccelerator } from '../utils/hookKeboard';
 
 const FileInputButton = styled.button`
   width: 70px;
@@ -16,7 +17,9 @@ export default class AudioPlayer extends Instrument {
     super(props);
     this.state = {
       filename: 'dont_click',
+      accelerator: '...',
     };
+    this.playKeyHookSymbol = Symbol(props.uuid);
   }
   play() {
     const { uuid } = this.props;
@@ -53,23 +56,13 @@ export default class AudioPlayer extends Instrument {
       if (combinationKeys.includes(event.which)) {
         return;
       }
-      const {
-        shiftKey,
-        ctrlKey,
-        altKey,
-      } = event;
-
-      fetch(`http://localhost:8080/audioplayer/${uuid}/bindkey/`, {
-        method: 'POST',
-        body: JSON.stringify({
-          shiftKey,
-          ctrlKey,
-          altKey,
-          key: event.which,
-        }),
-      })
-        .then((res) => { console.log(res.status); })
-        .catch((err) => { console.log(err); });
+      hookKeboard(this.playKeyHookSymbol, event, () => {
+        this.play();
+      });
+      const accelerator = convertToAccelerator(event);
+      this.setState({
+        accelerator,
+      });
       document.removeEventListener('keydown', handler);
     };
     document.addEventListener('keydown', handler);
@@ -77,6 +70,7 @@ export default class AudioPlayer extends Instrument {
   render() {
     const {
       filename,
+      accelerator,
     } = this.state;
     return (
       <SingleBox {...this.props}>
@@ -93,7 +87,7 @@ export default class AudioPlayer extends Instrument {
           type="file"
           onChange={event => this.handleFileUpload(event)}
         />
-        Key:<button onClick={() => this.bindKey()}>...</button>
+        Key:<button onClick={() => this.bindKey()}>{accelerator}</button>
         <button onClick={() => this.play()}>Play</button>
       </SingleBox>
     );
