@@ -44,21 +44,6 @@ namespace MuGeonGiV2.Server
                 audioPlayer.Play(); 
                 return new Response();
             };
-            Post["/bindkey"] = parameters =>
-            {
-                if (!Storable.TryGet(parameters.Uuid, out AudioPlayer audioPlayer))
-                {
-                    return new NotFoundResponse();
-                }
-                var jsonString = Request.Body.AsString();
-                var data = JObject.Parse(jsonString);
-                var shiftKey = (bool)data["shiftKey"];
-                var ctrlKey = (bool)data["ctrlKey"];
-                var altKey = (bool)data["altKey"];
-                var key = (Keys)(int)data["key"];
-                audioPlayer.BindKey(shiftKey, ctrlKey, altKey, key);
-                return new Response();
-            };
         }
     }
 }

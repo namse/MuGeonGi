@@ -89,9 +89,10 @@ namespace MuGeonGiV2
                 });
             };
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            while (true)
+            {
+                Console.ReadLine();
+            }
         }
 
         static ISampleSource CreateEqulizer(ISampleSource existedSource)
@@ -149,9 +150,10 @@ namespace MuGeonGiV2
             mic.TurnOn();
             speaker.TurnOn();
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            while (true)
+            {
+                Console.ReadLine();
+            }
         }
 
         static void Filter()
@@ -187,9 +189,10 @@ namespace MuGeonGiV2
                 equalizer.SetFilter(frequency, 16);
             }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            while (true)
+            {
+                Console.ReadLine();
+            }
         }
     }
 }
