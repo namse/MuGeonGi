@@ -15,6 +15,8 @@ namespace MuGeonGiV2.Core
     public class Speaker : Instrument
     {
         private readonly WasapiOut _soundOut = new WasapiOut();
+        private float _volume = 1; // default by library (CSCore)
+        private bool _isInitialized = false;
         public override bool IsEndPoint => true;
 
         public Speaker()
@@ -36,7 +38,11 @@ namespace MuGeonGiV2.Core
 
         public void SetVolume(float volume)
         {
-            _soundOut.Volume = volume;
+            _volume = volume;
+            if (_isInitialized)
+            {
+                _soundOut.Volume = volume;
+            }
         }
 
         public List<MMDevice> AvailableDevices
@@ -54,6 +60,8 @@ namespace MuGeonGiV2.Core
         public override void Initialize(IWaveSource source)
         {
             _soundOut.Initialize(source);
+            _isInitialized = true;
+            SetVolume(_volume);
         }
 
         public override void TurnOn()
