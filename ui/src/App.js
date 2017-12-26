@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Canvas from './canvas/Canvas';
 import Menu from './Menu';
-import { onInstrumentAdded } from './utils/instrumentList';
 import restore from './utils/restore';
 import Setting from './Setting';
+
+let onInstrumentElementCreatedHandler;
+export function onInstrumentElementCreated(element) {
+  if (onInstrumentElementCreatedHandler) {
+    onInstrumentElementCreatedHandler(element);
+  }
+}
 
 const Container = styled.div`
   overflow: hidden;
@@ -24,12 +30,14 @@ class App extends Component {
     this.state = {
       instruments: [],
     };
-    onInstrumentAdded((instruments) => {
-      console.log(instruments);
+    onInstrumentElementCreatedHandler = (element) => {
       this.setState({
-        instruments,
+        instruments: [
+          ...this.state.instruments,
+          element,
+        ],
       });
-    });
+    };
     restore()
       .catch(err => console.log(err));
   }

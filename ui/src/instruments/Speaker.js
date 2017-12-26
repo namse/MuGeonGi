@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import SingleBox from './SingleBox';
+import Instrument from './Instrument';
 import SettingPortal from './SettingPortal';
 
-export default class Speaker extends Component {
+export default class Speaker extends Instrument {
   constructor(props) {
     super(props);
     this.state = {

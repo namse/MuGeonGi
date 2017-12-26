@@ -2,24 +2,28 @@ import createInstrument from '../server/createInstrument';
 import createCable from '../server/createCable';
 import { findJack } from '../instruments/Jack';
 import { findSingleBox } from '../instruments/SingleBox';
+import { instrumentList } from '../instruments/Instrument';
 
 const fs = window.require('fs');
 
 async function restoreInstruments(instruments) {
-  const createdInstruments = {};
-  console.log(instruments);
-  const promises = instruments.map(instrument =>
-    createInstrument(instrument.name)
-      .then((newInstrument) => {
-        createdInstruments[instrument.props.uuid] = newInstrument;
-        return findSingleBox(newInstrument.props.uuid);
-      })
-      .then((singleBox) => {
-        const { x, y } = instrument;
-        console.log(x, y);
-        singleBox.setDefaultPosition(x, y);
-      }));
-  return Promise.all(promises).then(() => createdInstruments);
+  await Promise.all(instruments.map(async (instrument) => {
+    const newInstrument = await createInstrument(instrument.name);
+
+    const singleBox = await findSingleBox(newInstrument.props.uuid);
+
+    const { x, y } = instrument;
+    singleBox.setDefaultPosition(x, y);
+
+    if (!instrument.state) {
+      return;
+    }
+    await Promise.all(Object.keys(instrument.state).map(async (key) => {
+      const method = `set${key.slice(0, 1).toUpperCase()}${key.slice(1)}`;
+      const param = instrument.state[key];
+      await newInstrument[method](param);
+    }));
+  }));
 }
 
 async function restoreCables({
@@ -35,11 +39,13 @@ async function restoreCables({
     let newEndJack;
     await Promise.all(oldInstruments.map(async (instrument) => {
       const jackNames = ['inputJack', 'outputJack'];
+
       await Promise.all(jackNames.map(async (jackName) => {
         if (instrument.props[jackName]) {
           const newInstrument = newInstruments[instrument.props.uuid];
           const jackUuid = instrument.props[jackName].uuid;
           const newJack = await findJack(newInstrument.props[jackName].uuid);
+
           if (jackUuid === cable.startJack.uuid) {
             newStartJack = newJack;
           } else if (jackUuid === cable.endJack.uuid) {
@@ -65,9 +71,10 @@ export default function restore() {
           instruments,
           cables,
         } = JSON.parse(data);
-        console.log(instruments);
-        const newInstruments = await restoreInstruments(instruments);
-        console.log(cables);
+
+        await restoreInstruments(instruments);
+        const newInstruments = instrumentList;
+
         restoreCables({
           cables,
           oldInstruments: instruments,

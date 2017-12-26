@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import keycode from 'keycode';
 import Instrument from './Instrument';
 import SingleBox from './SingleBox';
-import Jack from './Jack';
 
 const FileInputButton = styled.button`
   width: 70px;

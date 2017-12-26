@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
+import Instrument from './Instrument';
 import SingleBox from './SingleBox';
 import SettingPortal from './SettingPortal';
 
-export default class Mic extends Component {
+export default class Mic extends Instrument {
+  static StatesWillSave = [
+    'device',
+  ];
   constructor(props) {
     super(props);
     this.state = {
       devices: [],
-      selectedDevice: undefined,
+      device: undefined,
     };
     const {
       uuid,
@@ -27,7 +31,7 @@ export default class Mic extends Component {
   }
   setDevice = (device) => {
     this.setState({
-      selectedDevice: device,
+      device,
     });
     if (device.length <= 0) {
       return;
@@ -48,9 +52,9 @@ export default class Mic extends Component {
   render() {
     const {
       devices,
-      selectedDevice,
+      device,
     } = this.state;
-    const options = devices.map(device => <option value={device}>{device}</option>);
+    const options = devices.map(_device => <option value={_device}>{_device}</option>);
     return (
       <SingleBox
         {...this.props}
@@ -60,7 +64,7 @@ export default class Mic extends Component {
         <select
           style={{ width: '100%' }}
           onChange={event => this.setDevice(event.target.value)}
-          value={selectedDevice}
+          value={device}
         >
           {options}
         </select>
@@ -68,12 +72,11 @@ export default class Mic extends Component {
         <SettingPortal
           {...this.props}
         >
-          {'<Mic>'}
           Device:
           <select
             style={{ width: '100%' }}
             onChange={event => this.setDevice(event.target.value)}
-            value={selectedDevice}
+            value={device}
           >
             {options}
           </select>
