@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import save from '../utils/save';
+import destroyInstrument from '../server/destroyInstrument';
 
 export const instrumentList = [];
 export const stateMap = {}; // uuid, state
@@ -41,13 +42,15 @@ export default class Instrument extends Component {
   componentDidUpdate() {
     this.saveState();
   }
-  componentWillUnmount() {
+  async componentWillUnmount() {
     const { uuid } = this.props;
-    fetch(`http://localhost:8080/instrument/${uuid}`, {
-      method: 'delete',
-    })
-      .then(res => console.log(`delete instrument : ${res.status}`));
-    // TODO : List에서 지우세요 좋은 말 할 때
+
+    const index = instrumentList.findIndex(instrument => instrument.uuid === this.props.uuid);
+    instrumentList.splice(index, 1);
+
+    await destroyInstrument(uuid);
+    save();
+    console.log('delete instrument');
   }
   saveState() {
     const {

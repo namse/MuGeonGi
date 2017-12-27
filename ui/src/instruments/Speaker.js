@@ -22,13 +22,6 @@ export default class Speaker extends Instrument {
       .then(res => res.json())
       .then(devices => this.setState({ devices: ['', ...devices] }));
   }
-  componentWillUnmount() {
-    const { uuid } = this.props;
-    fetch(`http://localhost:8080/instrument/${uuid}`, {
-      method: 'delete',
-    })
-      .then(res => console.log(`delete speaker : ${res.status}`));
-  }
   turnOn = () => {
     const { uuid } = this.props;
     fetch(`http://localhost:8080/speaker/${uuid}/TurnOn`, {

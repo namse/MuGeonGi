@@ -22,13 +22,6 @@ export default class Mic extends Instrument {
       .then(devices => this.setState({ devices: ['', ...devices] }))
       .catch(() => console.log('hi'));
   }
-  componentWillUnmount() {
-    const { uuid } = this.props;
-    fetch(`http://localhost:8080/instrument/${uuid}`, {
-      method: 'delete',
-    })
-      .then(res => console.log(`delete mic : ${res.status}`));
-  }
   turnOn = () => {
     const { uuid } = this.props;
     fetch(`http://localhost:8080/mic/${uuid}/TurnOn`, {

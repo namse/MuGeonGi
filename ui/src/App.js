@@ -12,6 +12,13 @@ export function onInstrumentElementCreated(element) {
   }
 }
 
+let _deleteInstrument;
+export function deleteInstrument(uuid) {
+  if (_deleteInstrument) {
+    _deleteInstrument(uuid);
+  }
+}
+
 const Container = styled.div`
   overflow: hidden;
 `;
@@ -36,6 +43,14 @@ class App extends Component {
           ...this.state.instruments,
           element,
         ],
+      });
+    };
+    _deleteInstrument = (uuid) => {
+      const { instruments } = this.state;
+      const newInstruments = instruments.filter(instrument =>
+        instrument.props.uuid !== uuid);
+      this.setState({
+        instruments: newInstruments,
       });
     };
     restore()

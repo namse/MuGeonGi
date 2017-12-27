@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { onSingleBoxClicked } from './instruments/SingleBox';
 
 const Conatiner = styled.div`
   height: 30%;

@@ -10,7 +10,10 @@ export default instrument =>
     .then(res => res.json())
     .then((props) => {
       const instrumentClass = instrumentClassMap[instrument];
-      const element = React.createElement(instrumentClass, props, null);
+      const element = React.createElement(instrumentClass, {
+        key: props.uuid,
+        ...props,
+      }, null);
       onInstrumentElementCreated(element);
       return findInstrument(props.uuid);
     });

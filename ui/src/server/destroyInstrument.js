@@ -1,5 +1,5 @@
 export default uuid =>
-  fetch(`http://localhost:8080/${uuid}`, {
+  fetch(`http://localhost:8080/instrument/${uuid}`, {
     method: 'DELETE',
   })
     .then((res) => {

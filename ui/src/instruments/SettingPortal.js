@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import styled from 'styled-components';
 import { onSingleBoxClicked } from './SingleBox';
+import { deleteInstrument } from '../App';
+
+const DeleteButton = styled.button`
+  float: right;
+`;
 
 export default class SettingPortal extends Component {
   constructor(props) {
@@ -19,8 +25,16 @@ export default class SettingPortal extends Component {
     if (!settingDom || !this.state.show) {
       return false;
     }
+    const settingWindow = (
+      <div>
+        <DeleteButton
+          onClick={() => deleteInstrument(this.props.uuid)}
+        >Delete
+        </DeleteButton>
+        {this.props.children}
+      </div>);
     return ReactDOM.createPortal(
-      this.props.children,
+      settingWindow,
       settingDom,
     );
   }

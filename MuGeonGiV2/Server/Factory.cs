@@ -28,20 +28,15 @@ namespace MuGeonGiV2.Server
                 return Response.AsJson(instrument);
             };
             
-            Delete["/{uuid}"] = parameters =>
+            Delete["/instrument/{uuid}"] = parameters =>
             {
-                if (Instrument.TryGet(parameters.uuid, out Instrument instrument))
+                if (!Storable.TryGet(parameters.uuid, out Instrument instrument))
                 {
-                    instrument.Dispose();
-                    return new Response
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                    };
+                    return new NotFoundResponse();
                 }
-                return new Response
-                {
-                    StatusCode = HttpStatusCode.NotFound,
-                };
+                    
+                instrument.Dispose();
+                return new Response();
             };
         }
     }
