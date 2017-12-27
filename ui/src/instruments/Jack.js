@@ -29,11 +29,25 @@ export default class Jack extends Component {
     jackMap[uuid] = undefined;
   }
   onMouseDown() {
-    Canvas.onJackClicked(this);
+    if (!this.cable) {
+      Canvas.onJackClicked(this);
+      return;
+    }
+    console.log('i am already connected with cable!');
+    this.cable.detachJack(this);
+    Canvas.AttachCableToMouse(this.cable);
+    this.setCable(null);
   }
   onMouseUp() {
+    if (this.cable) {
+      console.log('i am already connected with cable!');
+      return;
+    }
     console.log('i am jack on mouse up function');
     Canvas.onMouseUpOnJack(this);
+  }
+  setCable(cable) {
+    this.cable = cable;
   }
   getPosition() {
     const {

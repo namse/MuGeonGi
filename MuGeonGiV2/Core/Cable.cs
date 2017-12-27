@@ -22,6 +22,19 @@ namespace MuGeonGiV2.Core
             jack.Cable = cable;
             cable.OnConnect();
         }
+        public static void Disconnect(this Jack jack, Cable cable)
+        {
+            cable.OnDisonnect();
+            if (jack is OutputJack outputJack)
+            {
+                cable.OutputJack = null;
+            }
+            else
+            {
+                cable.InputJack = null;
+            }
+            jack.Cable = null;
+        }
     }
     public class Cable : Instrument
     {
@@ -44,6 +57,23 @@ namespace MuGeonGiV2.Core
 
             var soundInInstrument = previousEndpoint as Instrument;
             soundInInstrument.SetCircuitUp();
+        }
+
+        internal void OnDisonnect()
+        {
+            if (Previous == null || Next == null)
+            {
+                return;
+            }
+            var previousEndpoint = Previous.FindEndPoint(this);
+            var nextEndpoint = Next.FindEndPoint(this);
+            if (previousEndpoint == null || nextEndpoint == null)
+            {
+                return;
+            }
+
+            var soundInInstrument = previousEndpoint as Instrument;
+            soundInInstrument.SetCircuitDown();
         }
     }
 }

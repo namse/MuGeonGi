@@ -14,7 +14,7 @@ namespace MuGeonGiV2.Core
     [JsonObject(MemberSerialization.OptIn)]
     public class Speaker : Instrument
     {
-        private readonly WasapiOut _soundOut = new WasapiOut();
+        private WasapiOut _soundOut = new WasapiOut();
         private float _volume = 1; // default by library (CSCore)
         private bool _isInitialized = false;
         public override bool IsEndPoint => true;
@@ -64,9 +64,22 @@ namespace MuGeonGiV2.Core
             SetVolume(_volume);
         }
 
+        public override void Uninitialize()
+        {
+            _isInitialized = false;
+        }
+
         public override void TurnOn()
         {
-            _soundOut.Play();
+            if (_isInitialized)
+            {
+                _soundOut.Play();
+            }   
+        }
+
+        public override void TurnOff()
+        {
+            _soundOut.Stop();
         }
     }
 }

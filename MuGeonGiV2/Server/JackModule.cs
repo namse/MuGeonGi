@@ -14,7 +14,7 @@ namespace MuGeonGiV2.Server
         {
             Post["/connectCable/{CableUuid}"] = parameters =>
             {
-                if (!Storable.TryGet(parameters.CableUuid, out Storable instrument))
+                if (!Storable.TryGet(parameters.CableUuid, out Cable cable))
                 {
                     return new NotFoundResponse();
                 }
@@ -22,8 +22,20 @@ namespace MuGeonGiV2.Server
                 {
                     return new NotFoundResponse();
                 }
-                var cable = (Cable)instrument;
                 jack.Connect(cable);
+                return new Response();
+            };
+            Post["/disconnectCable/{CableUuid}"] = parameters =>
+            {
+                if (!Storable.TryGet(parameters.CableUuid, out Cable cable))
+                {
+                    return new NotFoundResponse();
+                }
+                if (!Storable.TryGet(parameters.Uuid, out Jack jack))
+                {
+                    return new NotFoundResponse();
+                }
+                jack.Disconnect(cable);
                 return new Response();
             };
         }

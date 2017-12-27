@@ -1,6 +1,5 @@
-import React from 'react';
 import Cable from '../canvas/Cable';
-import { addCable } from '../utils/cableList';
+import save from '../utils/save';
 
 export default () =>
   fetch('http://localhost:8080/Cable', {
@@ -9,6 +8,6 @@ export default () =>
     .then(res => res.json())
     .then((props) => {
       const cable = new Cable(props);
-      addCable(cable);
+      save();
       return cable;
     });

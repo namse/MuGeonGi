@@ -63,7 +63,7 @@ namespace MuGeonGiV2
         [STAThread]
         static void Main()
         {
-            // MicToSpeaker();
+            //MicToSpeaker();
             // Filter();
             OnlyServer();
             //Test();
@@ -153,6 +153,9 @@ namespace MuGeonGiV2
             while (true)
             {
                 Console.ReadLine();
+                speaker.TurnOff();
+                Console.ReadLine();
+                speaker.TurnOn();
             }
         }
 

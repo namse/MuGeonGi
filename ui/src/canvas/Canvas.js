@@ -1,7 +1,6 @@
-import Cable from './Cable';
+import { cableList } from './Cable';
 import destroyInstrument from '../server/destroyInstrument';
 import createCable from '../server/createCable';
-import cableList, { removeCable } from '../utils/cableList';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
@@ -15,15 +14,12 @@ let state = canvasState.IDLE;
 
 let connectingCable;
 
-
-function onMouseUp() {
+async function onMouseUp() {
   if (state === canvasState.CABLING) {
     state = canvasState.IDLE;
-    destroyInstrument(connectingCable.uuid)
-      .then(() => {
-        removeCable(connectingCable);
-        connectingCable = undefined;
-      });
+    await destroyInstrument(connectingCable.uuid);
+    connectingCable.destroy();
+    connectingCable = undefined;
   }
 }
 
@@ -58,4 +54,8 @@ export default {
     }
   },
   onMouseUp,
+  AttachCableToMouse(cable) {
+    connectingCable = cable;
+    state = canvasState.CABLING;
+  },
 };

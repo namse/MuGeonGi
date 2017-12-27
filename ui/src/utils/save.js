@@ -1,5 +1,5 @@
-import { instrumentList, onInstrumentAdded, stateMap } from '../instruments/Instrument';
-import cableList, { onCableAdded } from './cableList';
+import { instrumentList, stateMap } from '../instruments/Instrument';
+import { cableList } from '../canvas/Cable';
 import { findSingleBox } from '../instruments/SingleBox';
 
 const fs = window.require('fs');
@@ -40,7 +40,7 @@ export default function save() {
     });
     const string = JSON.stringify({
       instruments: instrumentData,
-      cables: cableData,
+      cableList: cableData,
     }, null, 2);
 
     fs.writeFile('.save', string, (err) => {
@@ -51,6 +51,3 @@ export default function save() {
     });
   });
 }
-
-onInstrumentAdded(() => save());
-onCableAdded(() => save());

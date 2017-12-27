@@ -28,11 +28,11 @@ async function restoreInstruments(instruments) {
 }
 
 async function restoreCables({
-  cables,
+  cableList,
   oldInstruments,
   newInstrumentMap, // old UUID, new Instrument Instance
 }) {
-  await Promise.all(cables.map(async (cable) => {
+  await Promise.all(cableList.map(async (cable) => {
     if (!cable.startJack || !cable.endJack) {
       return;
     }
@@ -69,13 +69,13 @@ export default function restore() {
       try {
         const {
           instruments,
-          cables,
+          cableList,
         } = JSON.parse(data);
 
         const newInstrumentMap = await restoreInstruments(instruments);
 
         restoreCables({
-          cables,
+          cableList,
           oldInstruments: instruments,
           newInstrumentMap,
         });

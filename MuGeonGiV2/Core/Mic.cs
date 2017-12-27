@@ -47,5 +47,10 @@ namespace MuGeonGiV2.Core
         {
             SoundIn.Start();
         }
+
+        public override void TurnOff()
+        {
+            SoundIn.Stop();
+        }
     }
 }

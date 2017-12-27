@@ -26,7 +26,17 @@ namespace MuGeonGiV2.Core
             throw new NotImplementedException();
         }
 
+        public virtual void TurnOff()
+        {
+            throw new NotImplementedException();
+        }
+
         public virtual void Initialize(IWaveSource outputSource)
+        {
+            throw new NotImplementedException();
+        }
+
+        public virtual void Uninitialize()
         {
             throw new NotImplementedException();
         }
@@ -48,6 +58,25 @@ namespace MuGeonGiV2.Core
             soundOutInstrument.Initialize(source);
             soundOutInstrument.TurnOn();
             TurnOn();
+        }
+
+        public void SetCircuitDown()
+        {
+            var next = Next;
+            var source = OutputSource;
+            while (next.IsEndPoint == false)
+            {
+                if (next is Effector)
+                {
+                    var effector = next as Effector;
+                    source = effector.AppendSource(source);
+                }
+                next = next.Next;
+            }
+            var soundOutInstrument = next as Instrument;
+            soundOutInstrument.TurnOff();
+            soundOutInstrument.Uninitialize();
+            TurnOff();
         }
 
         protected Instrument GetSoundOutEndPoint()
