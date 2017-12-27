@@ -13,7 +13,7 @@ using Newtonsoft.Json.Linq;
 
 namespace MuGeonGiV2.Server
 {
-    public class AudioPlayerModule : MyModule
+    public class AudioPlayerModule : NancyModule
     {
         public AudioPlayerModule() : base("/audioplayer/{Uuid}")
         {

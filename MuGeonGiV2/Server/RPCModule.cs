@@ -10,7 +10,7 @@ using static System.Char;
 
 namespace MuGeonGiV2.Server
 {
-    public class RpcModule : MyModule
+    public class RpcModule : NancyModule
     {
         public RpcModule() : base("/{Type}/{Uuid}")
         {

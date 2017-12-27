@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Server
 {
-    public class SpeakerModule : MyModule
+    public class SpeakerModule : NancyModule
     {
         public SpeakerModule() : base("/speaker/{Uuid}")
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Server
 {
-    public class MicModule : MyModule
+    public class MicModule : NancyModule
     {
         public MicModule() : base("/Mic/{Uuid}")
         {

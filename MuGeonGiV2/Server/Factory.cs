@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Server
 {
-    public class Factory : MyModule
+    public class Factory : NancyModule
     {
         public Factory()
         {
@@ -43,17 +43,6 @@ namespace MuGeonGiV2.Server
                     StatusCode = HttpStatusCode.NotFound,
                 };
             };
-        }
-    }
-
-    public abstract class MyModule : NancyModule
-    {
-        protected MyModule(string modulePath = ""): base(modulePath)
-        {
-            After.AddItemToEndOfPipeline((ctx) => ctx.Response
-            .WithHeader("Access-Control-Allow-Origin", "*")
-            .WithHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, HEAD, OPTIONS")
-            .WithHeader("Access-Control-Allow-Headers", "Accept, Origin, Content-type"));
         }
     }
 }

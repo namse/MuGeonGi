@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MuGeonGiV2.Server
 {
-    public class JackModule : MyModule
+    public class JackModule : NancyModule
     {
         public JackModule() : base("/jack/{Uuid}")
         {
