@@ -51,7 +51,7 @@ namespace MuGeonGiV2
             });
             pipelines.AfterRequest += (ctx) =>
             {
-                Console.WriteLine($@"{ctx.Request.Path} - {ctx.Response.StatusCode}");
+                Console.WriteLine($@"[{ctx.Request.Method}] {ctx.Request.Path} - {ctx.Response.StatusCode}");
             };
         }
     }
