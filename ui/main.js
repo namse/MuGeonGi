@@ -3,7 +3,6 @@ const path = require('path');
 const url = require('url');
 require('./keyboardHook');
 
-
 const {
   globalShortcut,
   app,

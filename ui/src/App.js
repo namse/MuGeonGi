@@ -4,6 +4,12 @@ import Canvas from './canvas/Canvas';
 import Menu from './Menu';
 import restore from './utils/restore';
 import Setting from './Setting';
+import { blockSave } from './utils/save';
+
+window.onbeforeunload = (e) => {
+  blockSave();
+  deleteAllInstruments();
+};
 
 let onInstrumentElementCreatedHandler;
 export function onInstrumentElementCreated(element) {
@@ -19,10 +25,10 @@ export function deleteInstrument(uuid) {
   }
 }
 
-let _deleteAllInstrument;
-export function deleteAllInstrument() {
-  if (_deleteAllInstrument) {
-    _deleteAllInstrument();
+let _deleteAllInstruments;
+export function deleteAllInstruments() {
+  if (_deleteAllInstruments) {
+    _deleteAllInstruments();
   }
 }
 
@@ -60,7 +66,7 @@ class App extends Component {
         instruments: newInstruments,
       });
     };
-    _deleteAllInstrument = () => {
+    _deleteAllInstruments = () => {
       this.setState({
         instruments: [],
       });

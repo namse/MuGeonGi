@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import createInstrument from './server/createInstrument';
 import instrumentClassMap from './utils/instrumentClassMap';
-import { deleteAllInstrument } from './App';
+import { deleteAllInstruments } from './App';
 
 const Conatiner = styled.div`
   height: 70%;
@@ -41,7 +41,7 @@ export default class Menu extends Component {
           </div>
         ))}
         <ResetButton
-          onClick={() => deleteAllInstrument()}
+          onClick={() => deleteAllInstruments()}
         >Reset
         </ResetButton>
       </Conatiner >

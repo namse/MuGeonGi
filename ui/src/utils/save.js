@@ -2,6 +2,11 @@ import { instrumentList, stateMap } from '../instruments/Instrument';
 import { cableList } from '../canvas/Cable';
 import { findSingleBox } from '../instruments/SingleBox';
 
+let isSaveBlocked = false;
+export function blockSave() {
+  isSaveBlocked = true;
+}
+
 const fs = window.require('fs');
 
 async function saveInstruments() {
@@ -23,6 +28,10 @@ async function saveInstruments() {
 
 export default function save() {
   return new Promise(async (resolve, reject) => {
+    if (isSaveBlocked) {
+      resolve();
+      return;
+    }
     const instrumentData = await saveInstruments();
 
     const cableData = cableList.map((cable) => {
