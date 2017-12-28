@@ -27,7 +27,7 @@ const PlayGround = styled.div`
   height: 70%;
   border: 1px solid red;
   left: 100px;
-  position: fixed; /* Stay in place */  
+  position: fixed;
 `;
 
 class App extends Component {
