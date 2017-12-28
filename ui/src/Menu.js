@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import createInstrument from './server/createInstrument';
 import instrumentClassMap from './utils/instrumentClassMap';
+import { deleteAllInstrument } from './App';
 
 const Conatiner = styled.div`
   height: 70%;
@@ -14,15 +15,16 @@ const Conatiner = styled.div`
   border: 1px solid blue;
 `;
 
+const ResetButton = styled.button`
+  bottom: 0;
+  position: absolute;
+`;
+
 export default class Menu extends Component {
   constructor(props) {
     super(props);
 
-    const fs = window.require('fs');
-    const path = window.require('path');
-
     const instrumentNames = Object.keys(instrumentClassMap);
-
     this.state = {
       instrumentNames,
     };
@@ -38,6 +40,10 @@ export default class Menu extends Component {
             <button onClick={() => this.onClick(instrument)}>{instrument}</button>
           </div>
         ))}
+        <ResetButton
+          onClick={() => deleteAllInstrument()}
+        >Reset
+        </ResetButton>
       </Conatiner >
     );
   }

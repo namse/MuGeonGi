@@ -27,16 +27,19 @@ export default class Jack extends Component {
   componentWillUnmount() {
     const { uuid } = this.props;
     jackMap[uuid] = undefined;
+    if (this.cable) {
+      this.cable.destroy();
+    }
   }
-  onMouseDown() {
+  async onMouseDown() {
     if (!this.cable) {
       Canvas.onJackClicked(this);
       return;
     }
     console.log('i am already connected with cable!');
-    this.cable.detachJack(this);
-    Canvas.AttachCableToMouse(this.cable);
-    this.setCable(null);
+    const { cable } = this;
+    await this.cable.detachJack(this);
+    Canvas.AttachCableToMouse(cable);
   }
   onMouseUp() {
     if (this.cable) {

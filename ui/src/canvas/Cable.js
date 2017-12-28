@@ -2,6 +2,7 @@ import Sprite from './Sprite';
 import getMousePosition from '../utils/getMousePosition';
 import connectCable from '../server/connectCable';
 import disconnectCable from '../server/disconnectCable';
+import destroyInstrument from '../server/destroyInstrument';
 
 export const cableList = [];
 
@@ -9,17 +10,23 @@ export default class Cable extends Sprite {
   constructor({ uuid }) {
     super();
     this.uuid = uuid;
+    this.isDestroying = false;
     cableList.push(this);
   }
-  destroy() {
+  async destroy() {
+    if (this.isDestroying) {
+      return;
+    }
+    this.isDestroying = true;
     const index = cableList.findIndex(cable => cable === this);
     cableList.splice(index, 1);
-    if (this.startJack) {
-      this.startJack.setCable(null);
-    }
     if (this.endJack) {
-      this.endJack.setCable(null);
+      await this.detachJack(this.endJack);
     }
+    if (this.startJack) {
+      await this.detachJack(this.startJack);
+    }
+    await destroyInstrument(this.uuid);
   }
   setStartJack(startJack) {
     this.startJack = startJack;
@@ -31,12 +38,16 @@ export default class Cable extends Sprite {
     endJack.setCable(this);
     return connectCable(endJack.props.uuid, this.uuid);
   }
-  detachJack(jack) {
+  // This function will not destory cable
+  async detachJack(jack) {
+    jack.setCable(null);
+
     if (jack === this.startJack) {
       this.startJack = this.endJack;
     }
     this.endJack = null;
-    return disconnectCable(jack.props.uuid, this.uuid);
+
+    await disconnectCable(jack.props.uuid, this.uuid);
   }
   render(ctx) {
     const {

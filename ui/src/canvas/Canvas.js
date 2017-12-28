@@ -1,5 +1,4 @@
 import { cableList } from './Cable';
-import destroyInstrument from '../server/destroyInstrument';
 import createCable from '../server/createCable';
 
 const canvas = document.getElementById('canvas');
@@ -17,8 +16,7 @@ let connectingCable;
 async function onMouseUp() {
   if (state === canvasState.CABLING) {
     state = canvasState.IDLE;
-    await destroyInstrument(connectingCable.uuid);
-    connectingCable.destroy();
+    await connectingCable.destroy();
     connectingCable = undefined;
   }
 }
@@ -55,6 +53,7 @@ export default {
   },
   onMouseUp,
   AttachCableToMouse(cable) {
+    console.log(cable);
     connectingCable = cable;
     state = canvasState.CABLING;
   },
