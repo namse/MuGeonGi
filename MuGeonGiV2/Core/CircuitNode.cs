@@ -15,14 +15,15 @@ namespace MuGeonGiV2.Core
             {
                 return self;
             }
-            var oppositeSide = from == self.Next ? self.Previous : self.Next;
+
+            var oppositeSide = from == self.Previous ? self.Next : self.Previous;
             return oppositeSide?.FindEndPoint(self);
         }
     }
     public interface ICircuitNode
     {
         //               Previous -------> Next
-        // Speaker => OutputJack => Cable => InputJack => Speaker
+        // Mic => OutputJack => Cable => InputJack => Speaker
         ICircuitNode Next { get; }
         ICircuitNode Previous { get; }
         bool IsEndPoint { get; }

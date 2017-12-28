@@ -68,7 +68,7 @@ namespace MuGeonGiV2
             OnlyServer();
             //Test();
         }
-
+       
         static void Test()
         {
             var soundIn = new WasapiCapture();
