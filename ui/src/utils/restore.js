@@ -14,14 +14,13 @@ async function restoreInstruments(instruments) {
     const { x, y } = instrument;
     singleBox.setDefaultPosition(x, y);
 
-    if (!instrument.state) {
-      return;
+    if (instrument.state) {
+      await Promise.all(Object.keys(instrument.state).map(async (key) => {
+        const method = `set${key.slice(0, 1).toUpperCase()}${key.slice(1)}`;
+        const param = instrument.state[key];
+        await newInstrument[method](param);
+      }));
     }
-    await Promise.all(Object.keys(instrument.state).map(async (key) => {
-      const method = `set${key.slice(0, 1).toUpperCase()}${key.slice(1)}`;
-      const param = instrument.state[key];
-      await newInstrument[method](param);
-    }));
     newInstrumentMap[instrument.props.uuid] = newInstrument;
   }));
   return newInstrumentMap;
