@@ -31,6 +31,8 @@ export default class SettingPortal extends Component {
           onClick={() => deleteInstrument(this.props.uuid)}
         >Delete
         </DeleteButton>
+        {/* Note: children's state must be deleted
+          when this becomes unmounted - when open other setting window! */}
         {this.props.children}
       </div>);
     return ReactDOM.createPortal(
