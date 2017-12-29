@@ -30,13 +30,13 @@ namespace MuGeonGiV2.Core
             {
                 _audioSource = _audioSource.ToMono();
             }
+            _audioSource.Position = _audioSource.Length;
 
             SetCircuitUp();
         }
 
         public override void TurnOn()
         {
-            _audioSource.Position = _audioSource.Length;
         }
 
         public void Play()
