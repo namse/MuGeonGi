@@ -2,6 +2,7 @@ import React from 'react';
 import Instrument from './Instrument';
 import SingleBox from './SingleBox';
 import SettingPortal from './SettingPortal';
+import KeyBindingHelper from '../utils/KeyBindingHelper';
 
 export default class Switch extends Instrument {
   static StatesWillSave = [
@@ -11,7 +12,12 @@ export default class Switch extends Instrument {
     super(props);
     this.state = {
       isOpen: false,
+      accelerator: '...',
     };
+    this.keyBindingHelper = new KeyBindingHelper(
+      () => this.toggleCircuit(),
+      accelerator => this.setState({ accelerator }),
+    );
   }
   async toggleCircuit() {
     const { isOpen } = this.state;
@@ -25,18 +31,14 @@ export default class Switch extends Instrument {
       <SingleBox {...this.props} >
         Switch
         <button onClick={() => this.toggleCircuit()}>
-          {this.state.isOpen ? 'Close' : 'Open'}
+          {this.state.isOpen ? 'Open' : 'Close'}
         </button>
 
         <SettingPortal
           {...this.props}
         >
-          {'<Highpass Filter>'}
-          Frequency:
-          <input
-            value={this.state.frequency}
-            onChange={event => this.setFrequency(event.target.value)}
-          />
+          {'<Switch>'}
+          <button onClick={() => this.keyBindingHelper.bindKey()}>{this.state.accelerator}</button>
         </SettingPortal>
       </SingleBox>
     );

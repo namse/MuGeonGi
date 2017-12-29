@@ -21,3 +21,7 @@ ipcMain.on('unregister', (event, accelerator) => {
     console.log(`registration failed, ${accelerator}`);
   }
 });
+
+ipcMain.on('unregisterAll', (event, accelerator) => {
+  globalShortcut.unregisterAll();
+});

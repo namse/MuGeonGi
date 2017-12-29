@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Instrument from './Instrument';
 import SingleBox from './SingleBox';
-import hookKeboard, { convertToAccelerator } from '../utils/hookKeboard';
+import KeyBindingHelper from '../utils/KeyBindingHelper';
 
 const FileInputButton = styled.button`
   width: 70px;
@@ -19,7 +19,10 @@ export default class AudioPlayer extends Instrument {
       filename: 'dont_click',
       accelerator: '...',
     };
-    this.playKeyHookSymbol = Symbol(props.uuid);
+    this.keyBindingHelper = new KeyBindingHelper(
+      () => this.play(),
+      accelerator => this.setState({ accelerator }),
+    );
   }
   play() {
     const { uuid } = this.props;
@@ -45,33 +48,7 @@ export default class AudioPlayer extends Instrument {
         });
       });
   }
-  bindKey() {
-    const SHIFT = 16;
-    const CTRL = 17;
-    const ALT = 18;
-    const combinationKeys = [SHIFT, CTRL, ALT];
-    const { uuid } = this.props;
-    const handler = (event) => {
-      event.preventDefault();
-      if (combinationKeys.includes(event.which)) {
-        return;
-      }
-      hookKeboard(this.playKeyHookSymbol, event, () => {
-        this.play();
-      });
-      const accelerator = convertToAccelerator(event);
-      this.setState({
-        accelerator,
-      });
-      document.removeEventListener('keydown', handler);
-    };
-    document.addEventListener('keydown', handler);
-  }
   render() {
-    const {
-      filename,
-      accelerator,
-    } = this.state;
     return (
       <SingleBox {...this.props}>
         AudioPlayer
@@ -79,7 +56,7 @@ export default class AudioPlayer extends Instrument {
         File:
         <FileInputButton
           onClick={() => { this.fileInput.click(); }}
-        >{filename}
+        >{this.state.filename}
         </FileInputButton>
         <input
           style={{ display: 'none' }}
@@ -87,7 +64,7 @@ export default class AudioPlayer extends Instrument {
           type="file"
           onChange={event => this.handleFileUpload(event)}
         />
-        Key:<button onClick={() => this.bindKey()}>{accelerator}</button>
+        <button onClick={() => this.keyBindingHelper.bindKey()}>{this.state.accelerator}</button>
         <button onClick={() => this.play()}>Play</button>
       </SingleBox>
     );

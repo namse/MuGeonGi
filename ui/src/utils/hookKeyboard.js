@@ -2,6 +2,16 @@ const { ipcRenderer } = window.require('electron');
 
 const hookInfoList = []; // { symbol, accelerator, handler }
 
+export function pauseKeyboardHooking() {
+  ipcRenderer.send('unregisterAll');
+}
+
+export function resumeKeyboardHooking() {
+  hookInfoList.forEach((info) => {
+    ipcRenderer.send('register', info.accelerator);
+  });
+}
+
 export function convertToAccelerator(keyInfo) {
   const {
     shiftKey,
@@ -21,7 +31,7 @@ ipcRenderer.on('onkeyhook', (event, accelerator) => {
   });
 });
 
-export default function hookKeboard(symbol, keyInfo, handler) {
+export default function hookKeyboard(symbol, keyInfo, handler) {
   const accelerator = convertToAccelerator(keyInfo);
   let hookInfo = hookInfoList.find(info => info.symbol === symbol);
 
