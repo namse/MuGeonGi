@@ -28,11 +28,11 @@ namespace MuGeonGiV2.Server
                 var file = Request.Files.ToList()[0];
                 var filename = file.Name;
                 var inputStream = file.Value;
-                var fileStream = File.Create($"./{filename}");
+                var fileStream = File.Create($"./{parameters.Uuid}-{filename}");
                 inputStream.CopyTo(fileStream);
                 fileStream.Close();
 
-                audioPlayer.SetFile($"./{filename}");
+                audioPlayer.SetFile($"./{parameters.Uuid}-{filename}");
                 return new Response();
             };
             Post["/play"] = parameters =>
