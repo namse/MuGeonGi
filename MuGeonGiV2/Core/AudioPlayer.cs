@@ -25,6 +25,8 @@ namespace MuGeonGiV2.Core
 
         public void SetFile(string filePath)
         {
+            // TODO : Disconnect first
+
             _audioSource = CodecFactory.Instance.GetCodec(filePath);
             if (_audioSource.WaveFormat.Channels == 2)
             {
@@ -32,6 +34,10 @@ namespace MuGeonGiV2.Core
             }
             _audioSource.Position = _audioSource.Length;
 
+            if (this.FindNextEndPoint() == null)
+            {
+                return;
+            }
             SetCircuitUp();
         }
 

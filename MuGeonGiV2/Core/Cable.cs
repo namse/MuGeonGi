@@ -42,14 +42,10 @@ namespace MuGeonGiV2.Core
         public override ICircuitNode Previous => OutputJack;
         public override bool IsEndPoint => false;
 
-        internal void OnConnect()
+        public void OnConnect()
         {
-            if (Previous == null || Next == null)
-            {
-                return;
-            }
-            var previousEndpoint = Previous.FindEndPoint(this);
-            var nextEndpoint = Next.FindEndPoint(this);
+            var previousEndpoint = this.FindPreviousEndPoint();
+            var nextEndpoint = this.FindNextEndPoint();
             if (previousEndpoint == null || nextEndpoint == null)
             {
                 return;
@@ -59,14 +55,10 @@ namespace MuGeonGiV2.Core
             soundInInstrument.SetCircuitUp();
         }
 
-        internal void OnDisonnect()
+        public void OnDisonnect()
         {
-            if (Previous == null || Next == null)
-            {
-                return;
-            }
-            var previousEndpoint = Previous.FindEndPoint(this);
-            var nextEndpoint = Next.FindEndPoint(this);
+            var previousEndpoint = this.FindPreviousEndPoint();
+            var nextEndpoint = this.FindNextEndPoint();
             if (previousEndpoint == null || nextEndpoint == null)
             {
                 return;

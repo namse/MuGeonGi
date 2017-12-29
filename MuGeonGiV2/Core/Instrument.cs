@@ -19,6 +19,7 @@ namespace MuGeonGiV2.Core
         public virtual ICircuitNode Next => OutputJack;
         public virtual ICircuitNode Previous => InputJack;
         public abstract bool IsEndPoint { get; }
+        
         public virtual IWaveSource OutputSource => throw new NotImplementedException();
 
         public virtual void TurnOn()
