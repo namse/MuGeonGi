@@ -4,3 +4,11 @@ body {
   font-family: sans-serif;
   user-select: none;
 }
+
+#canvas {
+  position: absolute;
+  border:1px solid #000000;
+  z-index: -1000;
+  top: 0px;
+  left: 0px;
+}

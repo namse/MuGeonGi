@@ -51,9 +51,13 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "electron": "set NODE_ENV=development&&electron ."
+    "electron": "set NODE_ENV=development&&electron .",
+    "electron-production": "xcopy ..\\MuGeonGiV2\\bin\\Release ..\\Release /y&&set NODE_ENV=production&&electron .",
+    "package-electron": "rmdir /S /Q mugeongi-win32-x64&&electron-packager . mugeongi --platform win32 --extra-resource ../MuGeonGiV2/bin/Release",
+    "run-package": ".\\mugeongi-win32-x64\\mugeongi.exe"
   },
   "devDependencies": {
+    "electron-packager": "^10.1.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.7.0",

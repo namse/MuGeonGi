@@ -40,6 +40,7 @@ const PlayGround = styled.div`
   height: 70%;
   border: 1px solid red;
   left: 100px;
+  top: 0px;
   position: fixed;
 `;
 

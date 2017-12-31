@@ -21,19 +21,24 @@ function createWindow() {
   mainWindow = new BrowserWindow({ width: 800, height: 600 });
 
   if (process.env.NODE_ENV !== 'development') {
-    coreServer = spawn(path.resolve(__dirname, '../MuGeonGiV2/bin/Release/MuGeonGiV2.exe'));
+    coreServer = spawn(path.resolve(__dirname, '../Release/MuGeonGiV2.exe'));
   }
 
   // and load the index.html of the app.
-  mainWindow.loadURL('http://localhost:3000/');
-  // mainWindow.loadURL(url.format({
-  //   pathname: path.join(__dirname, 'index.html'),
-  //   protocol: 'file:',
-  //   slashes: true
-  // }))
+  if (process.env.NODE_ENV !== 'development') {
+    mainWindow.loadURL(url.format({
+      pathname: path.join(__dirname, '/build/index.html'),
+      protocol: 'file:',
+      slashes: true,
+    }));
+  } else {
+    mainWindow.loadURL('http://localhost:3000/');
+  }
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  if (process.env.NODE_ENV === 'development') {
+    mainWindow.webContents.openDevTools();
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
