@@ -11,6 +11,7 @@ namespace MuGeonGiV2.Core
     {
         private bool _isOpen = false;
         public override ICircuitNode Next => _isOpen ? null : OutputJack;
+        public override ICircuitNode Previous => _isOpen ? null : InputJack;
 
         public void SetIsOpen(bool isOpen)
         {
