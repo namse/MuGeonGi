@@ -17,6 +17,8 @@ namespace MuGeonGiV2.Core
         private IWaveSource _audioSource;
         public override bool IsEndPoint => true;
         public override IWaveSource OutputSource => _audioSource;
+        private DateTime _backgroundPlayStartTime;
+        private bool _isPlayingOnBackground;
 
         public AudioPlayer()
         {
@@ -25,6 +27,8 @@ namespace MuGeonGiV2.Core
 
         public void SetFile(string filePath)
         {
+            _isPlayingOnBackground = false;
+
             // TODO : Disconnect first
 
             _audioSource = CodecFactory.Instance.GetCodec(filePath);
@@ -43,13 +47,26 @@ namespace MuGeonGiV2.Core
 
         public override void TurnOn()
         {
+            if (_isPlayingOnBackground)
+            {
+                var deltaTime = DateTime.Now - _backgroundPlayStartTime;
+                var deltaTimeByte = _audioSource.WaveFormat.BytesPerSecond * (long)deltaTime.TotalSeconds;
+                _audioSource.Position += deltaTimeByte;
+                _isPlayingOnBackground = false;
+            }
         }
 
         public void Play()
         {
-            var soundOutInstrument = GetSoundOutEndPoint();
             _audioSource.Position = 0;
+            var soundOutInstrument = GetSoundOutEndPoint();
             soundOutInstrument.TurnOn();
+        }
+
+        public override void TurnOff()
+        {
+            _isPlayingOnBackground = true;
+            _backgroundPlayStartTime = DateTime.Now;
         }
     }
 }
