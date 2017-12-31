@@ -67,6 +67,7 @@ namespace MuGeonGiV2.Core
         public override void Uninitialize()
         {
             _isInitialized = false;
+            _soundOut = new WasapiOut();
         }
 
         public override void TurnOn()

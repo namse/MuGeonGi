@@ -13,16 +13,14 @@ namespace MuGeonGiV2.Core
 {
     public class Mic : Instrument
     {
-        public readonly WasapiCapture SoundIn = new WasapiCapture();
-        public readonly RealTimeSoundInSource SoundInSource;
+        public WasapiCapture SoundIn;
+        public RealTimeSoundInSource SoundInSource;
         public override bool IsEndPoint => true;
         public override IWaveSource OutputSource => SoundInSource;
 
         public Mic()
         {
-            SoundIn.Initialize();
-            SoundInSource = new RealTimeSoundInSource(SoundIn);
-
+            Initialize();
             OutputJack = new OutputJack(this);
         }
 
@@ -51,6 +49,14 @@ namespace MuGeonGiV2.Core
         public override void TurnOff()
         {
             SoundIn.Stop();
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            SoundIn = new WasapiCapture();
+            SoundIn.Initialize();
+            SoundInSource = new RealTimeSoundInSource(SoundIn);
         }
     }
 }
