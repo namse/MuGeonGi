@@ -1,6 +1,7 @@
 const electron = require('electron');
 const path = require('path');
 const url = require('url');
+const { spawn } = require('child_process');
 require('./keyboardHook');
 
 const {
@@ -12,11 +13,13 @@ const {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let coreServer;
 
 function createWindow() {
   globalShortcut.unregisterAll();
   // Create the browser window.
   mainWindow = new BrowserWindow({ width: 800, height: 600 });
+  coreServer = spawn(path.resolve(__dirname, '../MuGeonGiV2/bin/Release/MuGeonGiV2.exe'));
 
   // and load the index.html of the app.
   mainWindow.loadURL('http://localhost:3000/');
@@ -31,6 +34,7 @@ function createWindow() {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
+    coreServer.kill();
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
