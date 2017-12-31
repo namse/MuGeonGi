@@ -29,8 +29,11 @@ namespace MuGeonGiV2.Core
         {
             _isPlayingOnBackground = false;
 
-            // TODO : Disconnect first
-
+            if (this.FindNextEndPoint() != null)
+            {
+                SetCircuitDown();
+            }
+            
             _audioSource = CodecFactory.Instance.GetCodec(filePath);
             if (_audioSource.WaveFormat.Channels == 2)
             {
