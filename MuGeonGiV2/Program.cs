@@ -42,6 +42,14 @@ namespace MuGeonGiV2
         }
         protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
+            pipelines.OnError.AddItemToEndOfPipeline((ctx, e) =>
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.ToString());
+                var response = (Response)e.Message;
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                return response;
+            });
             pipelines.AfterRequest.AddItemToEndOfPipeline(ctx =>
             {
                 ctx.Response
