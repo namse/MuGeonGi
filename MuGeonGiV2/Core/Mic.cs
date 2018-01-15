@@ -21,7 +21,7 @@ namespace MuGeonGiV2.Core
         public Mic()
         {
             Initialize();
-            OutputJack = new OutputJack(this);
+            OutputJacks.Add(new OutputJack(this));
         }
 
         public void SetDevice(string deviceTag)

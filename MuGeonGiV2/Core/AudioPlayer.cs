@@ -22,14 +22,14 @@ namespace MuGeonGiV2.Core
 
         public AudioPlayer()
         {
-            OutputJack = new OutputJack(this);
+            OutputJacks.Add(new OutputJack(this));
         }
 
         public void SetFile(string filePath)
         {
             _isPlayingOnBackground = false;
 
-            if (this.FindNextEndPoint() != null)
+            if (this.FindNextEndPoints().Count > 0)
             {
                 SetCircuitDown();
             }
@@ -41,11 +41,10 @@ namespace MuGeonGiV2.Core
             }
             _audioSource.Position = _audioSource.Length;
 
-            if (this.FindNextEndPoint() == null)
+            if (this.FindNextEndPoints().Count > 0)
             {
-                return;
+                SetCircuitUp();
             }
-            SetCircuitUp();
         }
 
         public override void TurnOn()
@@ -62,8 +61,11 @@ namespace MuGeonGiV2.Core
         public void Play()
         {
             _audioSource.Position = 0;
-            var soundOutInstrument = GetSoundOutEndPoint();
-            soundOutInstrument.TurnOn();
+            this.FindNextEndPoints().ToList().ForEach((nextEndPoint) =>
+            {
+                var soundOutInstrument = nextEndPoint as Instrument;
+                soundOutInstrument.TurnOn();
+            });
         }
 
         public override void TurnOff()

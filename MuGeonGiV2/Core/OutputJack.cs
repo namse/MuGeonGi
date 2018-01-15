@@ -12,10 +12,15 @@ namespace MuGeonGiV2.Core
 {
     public class OutputJack : Jack
     {
-        private readonly IWaveSource _waveSource;
-
-        public override ICircuitNode Next => Cable;
-        public override ICircuitNode Previous => Instrument;
+        public override List<ICircuitNode> Nexts =>
+            Cable == null
+            ? new List<ICircuitNode>()
+            : new List<ICircuitNode>() { Cable };
+        
+        public override List<ICircuitNode> Previouses =>
+            Instrument == null
+                ? new List<ICircuitNode>()
+                : new List<ICircuitNode>() { Instrument };
 
         public OutputJack(Instrument instrument) : base(instrument)
         {

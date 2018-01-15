@@ -9,43 +9,35 @@ namespace MuGeonGiV2.Core
 {
     public static class CircuitNodeExtension
     {
-        public static ICircuitNode FindPreviousEndPoint(this ICircuitNode self)
+        public static List<ICircuitNode> FindPreviousEndPoints(this ICircuitNode self)
         {
-            var previous = self.Previous;
-            if (previous == null)
-            {
-                return null;
-            }
-            return previous.IsEndPoint ? previous : previous.FindPreviousEndPoint();
+            return self.Previouses
+                .Select(previous =>
+                    previous.IsEndPoint
+                        ? new List<ICircuitNode>() { previous }
+                        : previous.FindPreviousEndPoints())
+                .SelectMany(i => i)
+                .ToList();
         }
 
-        public static ICircuitNode FindNextEndPoint(this ICircuitNode self)
+        public static List<ICircuitNode> FindNextEndPoints(this ICircuitNode self)
         {
-            var next = self.Next;
-            if (next == null)
-            {
-                return null;
-            }
-            return next.IsEndPoint ? next : next.FindNextEndPoint();
-        }
-
-        public static ICircuitNode FindEndPoint(this ICircuitNode self, ICircuitNode from)
-        {
-            if (self.IsEndPoint)
-            {
-                return self;
-            }
-
-            var oppositeSide = from == self.Previous ? self.Next : self.Previous;
-            return self?.FindEndPoint(oppositeSide);
+            Console.WriteLine(self.GetType());
+            return self.Nexts
+                .Select(next =>
+                    next.IsEndPoint
+                        ? new List<ICircuitNode>() { next }
+                        : next.FindNextEndPoints())
+                .SelectMany(i => i)
+                .ToList();
         }
     }
     public interface ICircuitNode
     {
-        //               Previous -------> Next
+        //               Previouses -------> Nexts
         // Mic => OutputJack => Cable => InputJack => Speaker
-        ICircuitNode Next { get; }
-        ICircuitNode Previous { get; }
+        List<ICircuitNode> Nexts { get; }
+        List<ICircuitNode> Previouses { get; }
         bool IsEndPoint { get; }
     }
 }

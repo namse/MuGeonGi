@@ -21,7 +21,7 @@ namespace MuGeonGiV2.Core
 
         public Speaker()
         {
-            InputJack = new InputJack(this);
+            InputJacks.Add(new InputJack(this));
             
             _soundOut.Stopped += (s, e) =>
             {

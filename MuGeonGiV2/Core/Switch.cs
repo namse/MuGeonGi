@@ -10,20 +10,21 @@ namespace MuGeonGiV2.Core
     public class Switch : Effector
     {
         private bool _isOpen = false;
-        public override ICircuitNode Next => _isOpen ? null : OutputJack;
-        public override ICircuitNode Previous => _isOpen ? null : InputJack;
+        private readonly List<ICircuitNode> _empty = new List<ICircuitNode>();
+        public override List<ICircuitNode> Nexts => _isOpen ? _empty : OutputJacks.Cast<ICircuitNode>().ToList();
+        public override List<ICircuitNode> Previouses => _isOpen ? _empty : InputJacks.Cast<ICircuitNode>().ToList();
 
         public void SetIsOpen(bool isOpen)
         {
             if (isOpen)
             {
-                OutputJack.Cable?.OnDisonnect();
+                OutputJacks.ForEach(jack => jack.Cable?.OnDisonnect());
                 _isOpen = true;
             }
             else
             {
                 _isOpen = false;
-                OutputJack.Cable?.OnConnect();
+                OutputJacks.ForEach(jack => jack.Cable?.OnConnect());
             }
         }
 

@@ -38,18 +38,21 @@ async function restoreCables({
     let newStartJack;
     let newEndJack;
     await Promise.all(oldInstruments.map(async (instrument) => {
-      const jackNames = ['inputJack', 'outputJack'];
-      await Promise.all(jackNames.map(async (jackName) => {
-        if (instrument.props[jackName]) {
+      const jacksNames = ['inputJacks', 'outputJacks'];
+      await Promise.all(jacksNames.map(async (jacksName) => {
+        if (instrument.props[jacksName]) {
           const newInstrument = newInstrumentMap[instrument.props.uuid];
-          const jackUuid = instrument.props[jackName].uuid;
-          const newJack = await findJack(newInstrument.props[jackName].uuid);
-
-          if (jackUuid === cable.startJack.uuid) {
-            newStartJack = newJack;
-          } else if (jackUuid === cable.endJack.uuid) {
-            newEndJack = newJack;
-          }
+          instrument.props[jacksName].forEach(async (jack, index) => {
+            const jackUuid = jack.uuid;
+            const newJacks = newInstrument.props[jacksName];
+            const newJackUuid = newJacks[index].uuid;
+            const newJack = await findJack(newJackUuid);
+            if (jackUuid === cable.startJack.uuid) {
+              newStartJack = newJack;
+            } else if (jackUuid === cable.endJack.uuid) {
+              newEndJack = newJack;
+            }
+          });
         }
       }));
     }));

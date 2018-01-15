@@ -13,11 +13,12 @@ namespace MuGeonGiV2.Core
         {
             if (jack is OutputJack outputJack)
             {
-                cable.OutputJack = outputJack;
+                cable.OutputJacks = new List<OutputJack>(){ outputJack };
             }
             else
             {
-                cable.InputJack = (InputJack)jack;
+
+                cable.InputJacks = new List<InputJack>() { (InputJack)jack };
             }
             jack.Cable = cable;
             cable.OnConnect();
@@ -27,45 +28,57 @@ namespace MuGeonGiV2.Core
             cable.OnDisonnect();
             if (jack is OutputJack outputJack)
             {
-                cable.OutputJack = null;
+                cable.OutputJacks = new List<OutputJack>();
             }
             else
             {
-                cable.InputJack = null;
+                cable.InputJacks = new List<InputJack>();
             }
             jack.Cable = null;
         }
     }
     public class Cable : Instrument
     {
-        public override ICircuitNode Next => InputJack;
-        public override ICircuitNode Previous => OutputJack;
         public override bool IsEndPoint => false;
+        public override List<ICircuitNode> Nexts => InputJacks.Cast<ICircuitNode>().ToList();
+        public override List<ICircuitNode> Previouses => OutputJacks.Cast<ICircuitNode>().ToList();
+
+        public Cable()
+        {
+            OutputJacks.Add(new OutputJack(this));
+            InputJacks.Add(new InputJack(this));
+        }
 
         public void OnConnect()
         {
-            var previousEndpoint = this.FindPreviousEndPoint();
-            var nextEndpoint = this.FindNextEndPoint();
-            if (previousEndpoint == null || nextEndpoint == null)
+            var previousEndpoints = this.FindPreviousEndPoints();
+            var nextEndpoints = this.FindNextEndPoints();
+            if (previousEndpoints.Count == 0 || nextEndpoints.Count == 0)
             {
                 return;
             }
 
-            var soundInInstrument = previousEndpoint as Instrument;
-            soundInInstrument.SetCircuitUp();
+            previousEndpoints.ForEach((previousEndpoint) =>
+            {
+                var soundInInstrument = previousEndpoint as Instrument;
+                soundInInstrument.SetCircuitUp();
+            });
         }
 
         public void OnDisonnect()
         {
-            var previousEndpoint = this.FindPreviousEndPoint();
-            var nextEndpoint = this.FindNextEndPoint();
-            if (previousEndpoint == null || nextEndpoint == null)
+            var previousEndpoints = this.FindPreviousEndPoints();
+            var nextEndpoints = this.FindNextEndPoints();
+            if (previousEndpoints.Count == 0 || nextEndpoints.Count == 0)
             {
                 return;
             }
 
-            var soundInInstrument = previousEndpoint as Instrument;
-            soundInInstrument.SetCircuitDown();
+            previousEndpoints.ForEach((previousEndpoint) =>
+            {
+                var soundInInstrument = previousEndpoint as Instrument;
+                soundInInstrument.SetCircuitDown();
+            });
         }
     }
 }

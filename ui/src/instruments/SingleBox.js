@@ -76,20 +76,21 @@ export default class SingleBox extends Component {
   setDefaultPosition(x, y) {
     this.setState({ position: { x, y } });
   }
-  renderJack(jackProps) {
-    if (!jackProps) {
+  renderJack(jacksProps) {
+    if (!jacksProps) {
       return false;
     }
+    const jacks = jacksProps.map(jackProps => <Jack {...jackProps} />);
     return (
       <JackContainer>
-        <Jack {...jackProps} />
+        {jacks}
       </JackContainer>
     );
   }
   render() {
     const {
-      inputJack,
-      outputJack,
+      inputJacks,
+      outputJacks,
     } = this.props;
     return (
       <Draggable
@@ -102,12 +103,12 @@ export default class SingleBox extends Component {
         <Container
           onClick={() => singleBoxClickedHandlers.forEach(handler => handler(this))}
         >
-          {this.renderJack(inputJack)}
+          {this.renderJack(inputJacks)}
           <Content className="content">
             a
             {this.props.children}
           </Content>
-          {this.renderJack(outputJack)}
+          {this.renderJack(outputJacks)}
         </Container>
       </Draggable>
     );

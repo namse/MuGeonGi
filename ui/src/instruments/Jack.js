@@ -17,6 +17,7 @@ export function findJack(uuid) {
 
 export default class Jack extends Component {
   componentWillMount() {
+    console.log(this.props);
     const { uuid } = this.props;
     jackMap[uuid] = this;
     const handler = jackFindingJobs[uuid];

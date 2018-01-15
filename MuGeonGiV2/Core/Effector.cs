@@ -13,8 +13,8 @@ namespace MuGeonGiV2.Core
 
         protected Effector()
         {
-            InputJack = new InputJack(this);
-            OutputJack = new OutputJack(this);
+            InputJacks.Add(new InputJack(this));
+            OutputJacks.Add(new OutputJack(this));
         }
 
         public abstract IWaveSource AppendSource(IWaveSource source);

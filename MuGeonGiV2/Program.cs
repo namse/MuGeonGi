@@ -28,8 +28,8 @@ namespace MuGeonGiV2
     {
         public CustomJsonSerializer()
         {
-            this.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            this.Formatting = Formatting.Indented;
+            ContractResolver = new CamelCasePropertyNamesContractResolver();
+            Formatting = Formatting.Indented;
         }
     }
     public class Bootstrapper : DefaultNancyBootstrapper
@@ -152,8 +152,8 @@ namespace MuGeonGiV2
 
             var cable1 = new Cable();
 
-            mic.OutputJack.Connect(cable1);
-            speaker.InputJack.Connect(cable1);
+            mic.OutputJacks[0].Connect(cable1);
+            speaker.InputJacks[0].Connect(cable1);
 
             mic.TurnOn();
             speaker.TurnOn();
@@ -180,17 +180,17 @@ namespace MuGeonGiV2
             var cable3 = new Cable();
             var cable4 = new Cable();
 
-            mic.OutputJack.Connect(cable1);
-            lowpassFilter.InputJack.Connect(cable1);
+            mic.OutputJacks[0].Connect(cable1);
+            lowpassFilter.InputJacks[0].Connect(cable1);
 
-            lowpassFilter.OutputJack.Connect(cable2);
-            equalizer.InputJack.Connect(cable2);
+            lowpassFilter.OutputJacks[0].Connect(cable2);
+            equalizer.InputJacks[0].Connect(cable2);
 
-            equalizer.OutputJack.Connect(cable3);
-            highpassFilter.InputJack.Connect(cable3);
+            equalizer.OutputJacks[0].Connect(cable3);
+            highpassFilter.InputJacks[0].Connect(cable3);
 
-            highpassFilter.OutputJack.Connect(cable4);
-            speaker.InputJack.Connect(cable4);
+            highpassFilter.OutputJacks[0].Connect(cable4);
+            speaker.InputJacks[0].Connect(cable4);
 
             mic.TurnOn();
             speaker.TurnOn();

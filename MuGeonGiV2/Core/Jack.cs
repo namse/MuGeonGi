@@ -13,13 +13,20 @@ namespace MuGeonGiV2.Core
         protected Instrument Instrument;
         public Cable Cable;
 
-        public abstract ICircuitNode Next { get; }
-        public abstract ICircuitNode Previous { get; }
+        public abstract List<ICircuitNode> Nexts { get; }
+        public abstract List<ICircuitNode> Previouses { get; }
         public bool IsEndPoint => false;
 
         protected Jack(Instrument instrument)
         {
-            Instrument = instrument;
+            if (instrument is Cable cable)
+            {
+                Cable = cable;
+            }
+            else
+            {
+                Instrument = instrument;
+            }
         }
     }
 }

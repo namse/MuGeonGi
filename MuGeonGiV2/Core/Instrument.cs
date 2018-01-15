@@ -12,12 +12,12 @@ namespace MuGeonGiV2.Core
     public abstract class Instrument : Storable, ICircuitNode
     {
         [JsonProperty]
-        public InputJack InputJack;
+        public List<InputJack> InputJacks = new List<InputJack>();
         [JsonProperty]
-        public  OutputJack OutputJack;
+        public  List<OutputJack> OutputJacks = new List<OutputJack>();
 
-        public virtual ICircuitNode Next => OutputJack;
-        public virtual ICircuitNode Previous => InputJack;
+        public virtual List<ICircuitNode> Nexts => OutputJacks.Cast<ICircuitNode>().ToList();
+        public virtual List<ICircuitNode> Previouses => InputJacks.Cast<ICircuitNode>().ToList();
         public abstract bool IsEndPoint { get; }
         
         public virtual IWaveSource OutputSource => throw new NotImplementedException();
@@ -44,50 +44,44 @@ namespace MuGeonGiV2.Core
 
         public void SetCircuitUp()
         {
-            var next = Next;
-            var source = OutputSource;
-            while (next.IsEndPoint == false)
+            void SetCircuitUp(ICircuitNode self, IWaveSource source)
             {
-                if (next is Effector)
-                {
-                    var effector = next as Effector;
-                    source = effector.AppendSource(source);
-                }
-                next = next.Next;
+                Console.WriteLine($"{self.GetType()}");
+                self.Nexts.ForEach((next) =>
+                    {
+                        if (next is Effector effector)
+                        {
+                            source = effector.AppendSource(source);
+                        }
+                        if (next.IsEndPoint)
+                        {
+                            var soundOutInstrument = next as Instrument;
+                            soundOutInstrument.Initialize(source);
+                            soundOutInstrument.TurnOn();
+                            TurnOn();
+                            return;
+                        }
+                        SetCircuitUp(next, source);
+                    });
             }
-            var soundOutInstrument = next as Instrument;
-            soundOutInstrument.Initialize(source);
-            soundOutInstrument.TurnOn();
-            TurnOn();
+
+            SetCircuitUp(this, OutputSource);
         }
 
         public void SetCircuitDown()
         {
-            var next = Next;
-            var source = OutputSource;
-            while (next.IsEndPoint == false)
+            var nextEndPoints = this.FindNextEndPoints();
+            nextEndPoints.ToList().ForEach((nextEndPoint) =>
             {
-                if (next is Effector)
-                {
-                    var effector = next as Effector;
-                    source = effector.AppendSource(source);
-                }
-                next = next.Next;
-            }
-            var soundOutInstrument = next as Instrument;
-            soundOutInstrument.TurnOff();
-            soundOutInstrument.Uninitialize();
-            TurnOff();
-        }
+                var soundOutInstrument = nextEndPoint as Instrument;
+                soundOutInstrument.TurnOff();
+                soundOutInstrument.Uninitialize();
+            });
 
-        protected Instrument GetSoundOutEndPoint()
-        {
-            var next = Next;
-            while (next.IsEndPoint == false)
+            if (nextEndPoints.Count == 1)
             {
-                next = next.Next;
+                TurnOff();
             }
-            return next as Instrument;
         }
     }
 }
