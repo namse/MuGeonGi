@@ -17,7 +17,6 @@ const instrumentFindingJobs = {}; // uuid, handler
 export function findInstrument(uuid) {
   return new Promise((resolve, reject) => {
     const foundInstrument = instrumentMap[uuid];
-    console.log(foundInstrument);
     if (foundInstrument) {
       resolve(foundInstrument);
     } else {
@@ -27,6 +26,28 @@ export function findInstrument(uuid) {
 }
 
 export default class Instrument extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.constructor.StatesWillSave.forEach((property) => {
+      this.state[property] = this.props[property];
+
+      Object.defineProperty(this, property, {
+        set: (value) => {
+          this.setState({
+            [property]: value,
+          });
+          return fetch(`http://localhost:8080/${this.constructor.name}/${this.props.uuid}/${property}/${value}`, {
+            method: 'post',
+          })
+            .then((res) => {
+              console.log(`${this.constructor.name}/${this.props.uuid}/${property}/${value} : ${res.status}`);
+              return save();
+            });
+        },
+      });
+    });
+  }
   componentWillMount() {
     this.saveState();
     const { uuid } = this.props;

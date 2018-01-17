@@ -40,7 +40,7 @@ namespace MuGeonGiV2.Core
         /// For example, if the bufferSize is about 5 seconds big, data which got recorded 6 seconds ago, won't be available anymore.
         /// </remarks>
         public RealTimeSoundInSource(ISoundIn soundIn)
-            : this(ThrowIfSoundInNotInitialized(soundIn), 8192)
+            : this(ThrowIfSoundInNotInitialized(soundIn), 8196)
         {
         }
 

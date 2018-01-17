@@ -77,6 +77,7 @@
     <Compile Include="Core\AudioPlayer.cs" />
     <Compile Include="Core\Cable.cs" />
     <Compile Include="Core\CircuitNode.cs" />
+    <Compile Include="Core\EchoEffector.cs" />
     <Compile Include="Core\EditableStream.cs" />
     <Compile Include="Core\Effector.cs" />
     <Compile Include="Core\Equalizer.cs" />

@@ -53,14 +53,28 @@ namespace MuGeonGiV2.Server
                 var methodName = $"Set{ToUpper(property[0])}{property.Substring(1)}";
 
                 var method = type.GetMethod(methodName);
-                var param = Convert.ChangeType(parameters.Value, method.GetParameters()[0].ParameterType);
-                
-                var parameterArray = new[]
+                if (method != null)
                 {
-                    param,
-                };
-                method.Invoke(storable, parameterArray);
-                return new Response();
+                    var param = Convert.ChangeType(parameters.Value, method.GetParameters()[0].ParameterType);
+
+                    var parameterArray = new[]
+                    {
+                        param,
+                    };
+                    method.Invoke(storable, parameterArray);
+                    return new Response();
+                }
+                var fieldName = $"{ToUpper(property[0])}{property.Substring(1)}";
+                var propertyInfo = type.GetProperty(fieldName);
+                if (propertyInfo != null)
+                {
+                    var fieldType = propertyInfo.PropertyType;
+                    var value = Convert.ChangeType(parameters.Value, fieldType);
+                    propertyInfo.SetValue(storable, value);
+                    return new Response();
+                }
+
+                return new NotFoundResponse();
             };
         }
     }

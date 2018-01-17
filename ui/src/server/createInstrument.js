@@ -9,6 +9,7 @@ export default instrument =>
   })
     .then(res => res.json())
     .then((props) => {
+      console.log(props);
       const instrumentClass = instrumentClassMap[instrument];
       const element = React.createElement(instrumentClass, {
         key: props.uuid,
